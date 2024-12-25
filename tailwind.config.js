@@ -8,7 +8,10 @@ export default {
     extend: {
       colors:{
         navBar:"rgba(101, 122, 132, 0.12)",
-      }
+      },
+      fontFamily: {
+        afacad: ['"Afacad"', 'sans-serif'],
+      },
     }
   },
   plugins: [],
