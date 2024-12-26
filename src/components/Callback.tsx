@@ -1,16 +1,27 @@
 import { useEffect } from "react"
 import { useUserContext } from '../hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
-
+import { AuroraBackground } from "./ui/aurora-background";
+import { TypewriterEffect } from "./ui/typewriter-effect";
 const Callback = () => {
     const navigate = useNavigate();
 
     const { setIsLoggedIn, isLoggedIn, code, setCode, setUser, setAccessToken } = useUserContext();
 
+    const words = [
+        {
+            text: "Authenticating",
+        },
+        {
+            text: "....",
+            className: "text-blue-500 text-neutral-400",
+        },
+    ];
+
     useEffect(() => {
         // Set Color whole color to black
         document.body.style.backgroundColor = "black";
-        return()=>{
+        return () => {
             document.body.style.backgroundColor = "#0D1117";
         }
     }, [])
@@ -39,7 +50,7 @@ const Callback = () => {
                         console.log('Access Token: ', data.message.access_token);
                         setAccessToken(data.message.access_token);
                         localStorage.setItem('accessToken', data.message.access_token);
-                        setUser({ username: data.userData.login });
+                        setUser({ username: data.userData.login, avatar_url: data.userData.avatar_url });
                         setIsLoggedIn(true);
                         navigate('/myspace');
                     } else {
@@ -51,11 +62,16 @@ const Callback = () => {
         }
     }, [])
     return (
-        <div className="h-full flex justify-center items-center bg-black overflow-hidden">
-            <p className="text-xl md:text-4xl animate-pulse font-bold font-mono mb-40 md:mb-24 ">
+        // <AuroraBackground>
+        <div className="h-full flex justify-center items-center overflow-hidden bg-black">
+            {/* <AuroraBackground> */}
+            {/* <p className="text-xl md:text-4xl animate-pulse font-bold font-mono mb-40 md:mb-24 ">
                 Authenticating....
-            </p>
+            </p> */}
+            <TypewriterEffect className="font-bold font-mono mb-40 md:mb-24" cursorClassName="bg-yellow-300 w-4 animate-pulse" words={words} />
+            {/* </AuroraBackground> */}
         </div>
+        /* </AuroraBackground> */
     )
 }
 export default Callback;
