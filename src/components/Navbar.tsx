@@ -1,6 +1,7 @@
 // import githubLogo from '../assets/githubLogo.svg'
 import { Link } from 'react-router-dom'
 import { useUserContext } from '../hooks/useUserContext'
+import ProfileButton from './ProfileButton'
 
 function Navbar() {
 
@@ -27,7 +28,7 @@ function Navbar() {
         {
           UserContext.isLoggedIn ?
             <Link to='myspace' className='text-lg'>
-              {UserContext.user?.username}
+              <ProfileButton username={UserContext.user?.username!} avatar_url={UserContext.user?.avatar_url!} ></ProfileButton>
             </Link>
             :
             <button onClick={UserContext.handleLogin} className='text-lg'>
