@@ -10,6 +10,9 @@ const Callback = () => {
     useEffect(() => {
         // Set Color whole color to black
         document.body.style.backgroundColor = "black";
+        return()=>{
+            document.body.style.backgroundColor = "#0D1117";
+        }
     }, [])
 
 
