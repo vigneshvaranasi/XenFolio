@@ -6,6 +6,7 @@ const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 console.log(CLIENT_ID)
 export type UserType = {
     username: string|null,
+    avatar_url: string    
 }
 
 type UserContextType = {
@@ -29,7 +30,7 @@ type UserContextProviderProps = {
 
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
-    const [user, setUser] = useState<UserType>({ username: null });
+    const [user, setUser] = useState<UserType>({ username: "", avatar_url: "" });
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [code, setCode] = useState<string | null>(null);
     const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -50,7 +51,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
 
     const handleLogout = async () => {
-        setUser({ username: null });
+        setUser({ username: "", avatar_url: "" });
         setIsLoggedIn(false);
         setCode(null);
     }
