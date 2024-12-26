@@ -5,34 +5,42 @@ import FoliosPage from "../pages/Folios.page";
 import CraftBenchPage from "../pages/CraftBench.page";
 import FolioViewPage from "../pages/FolioView.page";
 import MySpacePage from "../pages/MySpace.page";
-
+import ProtectedRoute from "../components/ProtectedRoute";
+import Callback from "../components/Callback";
 const normalRoutes: RouteObject = {
     path: "",
-    element:<Layout/>,
-    children:[
+    element: <Layout />,
+    children: [
         {
-            path:"/",
-            element:<HomePage/>
+            path: "/",
+            element: <HomePage />
         },
         {
-            path:"myspace",
-            element:<MySpacePage/>
+            path: "folios",
+            element: <FoliosPage />,
+            children: [
+                {
+                    path: "folioview",
+                    element: <FolioViewPage />
+                }
+            ]
         },
         {
-            path:"folios",
-            element:<FoliosPage/>
+            path:"callback",
+            element:<Callback/>
+        },
+        // Protected Routes
+        {
+            path: "myspace",
+            element: <ProtectedRoute element={<MySpacePage />} />
         },
         {
-            path:"craftbeanch",
-            element:<CraftBenchPage/>
-        },
-        {
-            path:"folioview",
-            element:<FolioViewPage/>
+            path: "craftbench",
+            element: <ProtectedRoute element={<CraftBenchPage />} />
         }
     ]
+};
 
-}
 const routes: RouteObject[] = [normalRoutes];
 
-export default routes
+export default routes;

@@ -6,11 +6,9 @@ import App from './App.tsx'
 import { UserContextProvider } from './store/UserStore/UserContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <UserContextProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </UserContextProvider>
-  </StrictMode>
+  <UserContextProvider>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </UserContextProvider>
 )

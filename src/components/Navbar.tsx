@@ -1,8 +1,11 @@
 // import githubLogo from '../assets/githubLogo.svg'
-
 import { Link } from 'react-router-dom'
+import { useUserContext } from '../hooks/useUserContext'
 
-function Navbar () {
+function Navbar() {
+
+  const UserContext = useUserContext();
+
   return (
     <div
       className={`
@@ -20,9 +23,17 @@ function Navbar () {
         <Link to='folios' className='text-lg'>
           Folios
         </Link>
-        <button className='text-lg'>
-          Sign In
-        </button>
+
+        {
+          UserContext.isLoggedIn ?
+            <Link to='myspace' className='text-lg'>
+              {UserContext.user?.username}
+            </Link>
+            :
+            <button onClick={UserContext.handleLogin} className='text-lg'>
+              Sign In
+            </button>
+        }
         {/* <div className='flex items-center gap-2'>
                     <p className='text-lg'>Sign In</p>
                     <img src={githubLogo} className=' w-5 sm:w-6' alt="GitHub Logo" />
