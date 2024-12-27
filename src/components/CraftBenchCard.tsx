@@ -33,7 +33,7 @@ function CraftBenchCard(benchData: CraftBenchCardProps) {
                         </div>
                     </div>
                     <div  className='mt-2 rounded-full bg-[#1A1A1A] w-fit drop-shadow-[0_0_10px_#1A1A1A12] font-sans font-semibold'>
-                        <a href={`https://githib.com/${benchData.username}/${benchData.bench.repoName}`}>
+                        <a href={`https://github.com/${benchData.username}/${benchData.bench.repoName}`}>
                             <div className='flex items-center  px-2 py-1'>                                <img src={githubLogo} className='w-4 h-4' alt="" />
                                 <p className='ml-1 lowercase text-sm'>
                                     {benchData.username}/{benchData.bench.repoName}

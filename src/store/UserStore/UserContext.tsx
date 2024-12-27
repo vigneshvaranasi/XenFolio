@@ -5,8 +5,8 @@ import { useEffect } from 'react'
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 // console.log(CLIENT_ID)
 export type UserType = {
-    username: string|null,
-    avatar_url: string    
+    username: string | null,
+    avatar_url: string
 }
 
 type UserContextType = {
@@ -20,6 +20,7 @@ type UserContextType = {
     setCode: React.Dispatch<React.SetStateAction<string | null>>,
     setAccessToken: React.Dispatch<React.SetStateAction<string | null>>,
     accessToken: string | null,
+    loading: boolean,
 }
 
 export const UserContext = createContext<UserContextType | null>(null)
@@ -34,14 +35,15 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [code, setCode] = useState<string | null>(null);
     const [accessToken, setAccessToken] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const savedCode = new URLSearchParams(window.location.search).get('code');
         if (savedCode && !code) {
-          setCode(savedCode);
-          setIsLoggedIn(true);
+            setCode(savedCode);
+            setIsLoggedIn(true);
         }
-        if(localStorage.getItem('accessToken')){
+        if (localStorage.getItem('accessToken')) {
             let currToken = localStorage.getItem('accessToken')!;
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
@@ -65,7 +67,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
                         setUser({ username: data.userData.login, avatar_url: data.userData.avatar_url });
                         console.log(data.dbData);
                         setIsLoggedIn(true);
-                        if(isLoggedIn){
+                        if (isLoggedIn) {
                             window.location.href = 'https://4cfw3zvk-8888.inc1.devtunnels.ms/myspace';
                         }
                     } else {
@@ -73,10 +75,12 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
                         setIsLoggedIn(false);
                     }
                 })
-                .catch((error) => console.error('Error fetching access token:', error));
-            
+                .catch((error) => console.error('Error fetching access token:', error))
+                .finally(() => setLoading(false));
+        } else {
+            setLoading(false);
         }
-      }, []);
+    }, []);
 
     const handleLogin = async ({ }) => {
         // console.log('clientID: ', CLIENT_ID);
@@ -93,7 +97,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     }
 
     return (
-        <UserContext.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, handleLogin, handleLogout, code, setCode, setAccessToken, accessToken }}>
+        <UserContext.Provider value={{ user, setUser, isLoggedIn, setIsLoggedIn, handleLogin, handleLogout, code, setCode, setAccessToken, accessToken, loading }}>
             {children}
         </UserContext.Provider>
     )

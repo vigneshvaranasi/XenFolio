@@ -7,7 +7,13 @@ type ProtectedRouteProps = {
 };
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
-    const { isLoggedIn } = useUserContext();
+    const { isLoggedIn, loading } = useUserContext();
+    if(loading) {
+        return (
+            //ToDo Loading animation
+            <div></div>
+        );
+    }
     if(!isLoggedIn) {
         return <Navigate to="/" />;
     }
