@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
-console.log(CLIENT_ID)
+// console.log(CLIENT_ID)
 export type UserType = {
     username: string|null,
     avatar_url: string    
@@ -41,10 +41,45 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
           setCode(savedCode);
           setIsLoggedIn(true);
         }
-      }, [code]);
+        if(localStorage.getItem('accessToken')){
+            let currToken = localStorage.getItem('accessToken')!;
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            headers.append('Accept', 'application/json');
+            headers.append('Origin', 'https://4cfw3zvk-8888.inc1.devtunnels.ms');
+            headers.append('token', currToken);
+            setAccessToken(localStorage.getItem('accessToken'));
+            // setIsLoggedIn(true);
+            fetch('https://4cfw3zvk-5000.inc1.devtunnels.ms/auth/verify', {
+                method: 'POST',
+                headers: headers
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // console.log(data.success);
+                    if (data.success) {
+                        // console.log('Access Token: ', data.message);
+                        console.log("Verifed Access Token from Local Storage")
+                        setAccessToken(data.message);
+                        localStorage.setItem('accessToken', data.message);
+                        setUser({ username: data.userData.login, avatar_url: data.userData.avatar_url });
+                        console.log(data.dbData);
+                        setIsLoggedIn(true);
+                        if(isLoggedIn){
+                            window.location.href = 'https://4cfw3zvk-8888.inc1.devtunnels.ms/myspace';
+                        }
+                    } else {
+                        console.error('Error: ', data);
+                        setIsLoggedIn(false);
+                    }
+                })
+                .catch((error) => console.error('Error fetching access token:', error));
+            
+        }
+      }, []);
 
     const handleLogin = async ({ }) => {
-        console.log('clientID: ', CLIENT_ID);
+        // console.log('clientID: ', CLIENT_ID);
         // const redirectURI = 'https://4cfw3zvk-8888.inc1.devtunnels.ms/';
         window.location.href = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo,user,workflow`;
         // setIsLoggedIn(true);        
@@ -54,6 +89,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
         setUser({ username: "", avatar_url: "" });
         setIsLoggedIn(false);
         setCode(null);
+        localStorage.clear();
     }
 
     return (

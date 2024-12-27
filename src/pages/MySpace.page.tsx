@@ -4,15 +4,12 @@ import { useUserContext } from '../hooks/useUserContext';
 const MySpacePage = () => {
   let UserContext = useUserContext();
   useEffect(() => {
-    console.log('UserContext: ', UserContext);
+    console.log('MySpace: UserContext: ', UserContext);
   }, [UserContext])
   return (
     <div>MySpacePage
       {
         UserContext.user? <p>{UserContext.user.username}</p> : <p>Not Logged In</p> 
-      }
-      {
-        UserContext.accessToken ? <p>{UserContext.accessToken}</p> : <p>No Access Token</p>
       }
     </div>
   )

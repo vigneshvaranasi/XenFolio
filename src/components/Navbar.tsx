@@ -20,21 +20,32 @@ function Navbar() {
         <div className={`opacity-100 text-white text-2xl hover:text-neutral-200`}>CreateFolio</div>
       </Link>
 
-      <div className='flex flex-row items-center gap-4'>
-        <Link to='folios' className='text-lg'>
+      <div className='flex flex-row justify-between items-center gap-0'>
+        <Link to='folios' className='text-lg mr-4'>
           Folios
         </Link>
 
         {
           UserContext.isLoggedIn ?
-            <Link to='myspace' className='text-lg'>
-              <ProfileButton username={UserContext.user?.username!} avatar_url={UserContext.user?.avatar_url!} ></ProfileButton>
-            </Link>
+            <>
+              <Link to='myspace' className='text-lg mr-4'>
+                MySpace
+              </Link>
+
+              <ProfileButton
+                username={UserContext.user?.username!}
+                avatar_url={UserContext.user?.avatar_url!}
+              />
+            </>
             :
-            <button onClick={UserContext.handleLogin} className='text-lg'>
+            <button 
+              onClick={UserContext.handleLogin} className='text-lg'
+            >
               Sign In
             </button>
         }
+
+        {/* This is SignIn Button with the GitHub Icon  refs: Line1 */}
         {/* <div className='flex items-center gap-2'>
                     <p className='text-lg'>Sign In</p>
                     <img src={githubLogo} className=' w-5 sm:w-6' alt="GitHub Logo" />
@@ -42,6 +53,7 @@ function Navbar() {
         {/* <div className='flex items-center gap-2'> */}
         {/* </div> */}
       </div>
+
     </div>
   )
 }

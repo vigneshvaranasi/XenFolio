@@ -25,10 +25,7 @@ const normalRoutes: RouteObject = {
                 }
             ]
         },
-        {
-            path:"callback",
-            element:<Callback/>
-        },
+        
         // Protected Routes
         {
             path: "myspace",
@@ -41,6 +38,11 @@ const normalRoutes: RouteObject = {
     ]
 };
 
-const routes: RouteObject[] = [normalRoutes];
+const callbackRoute: RouteObject = {
+    path: "callback",
+    element: <Callback />
+}
+
+const routes: RouteObject[] = [normalRoutes, callbackRoute];
 
 export default routes;

@@ -20,7 +20,7 @@ const Callback = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const codeParams = urlParams.get('code');
         if (codeParams) {
-            console.log("code:\n" + codeParams);
+            // console.log("code:\n" + codeParams);
             setCode(codeParams);
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
@@ -36,10 +36,10 @@ const Callback = () => {
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
-                        console.log('Access Token: ', data.message.access_token);
-                        setAccessToken(data.message.access_token);
-                        localStorage.setItem('accessToken', data.message.access_token);
-                        setUser({ username: data.userData.login });
+                        // console.log('Access Token: ', data.message);
+                        setAccessToken(data.message);
+                        localStorage.setItem('accessToken', data.message);
+                        setUser({ username: data.userData.login, avatar_url: data.userData.avatar_url });
                         setIsLoggedIn(true);
                         navigate('/myspace');
                     } else {
@@ -51,8 +51,8 @@ const Callback = () => {
         }
     }, [])
     return (
-        <div className="h-full flex justify-center items-center bg-black overflow-hidden">
-            <p className="text-xl md:text-4xl animate-pulse font-bold font-mono mb-40 md:mb-24 ">
+        <div className="h-screen flex justify-center items-center bg-black overflow-hidden">
+            <p className="text-xl md:text-4xl animate-pulse font-bold font-mono mb-32 md:mb-0 ">
                 Authenticating....
             </p>
         </div>
