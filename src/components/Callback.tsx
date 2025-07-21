@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useUserContext } from '../hooks/useUserContext';
 import { useNavigate } from 'react-router-dom';
-
+import { BACKEND_URL, FRONTEND_URL } from "../config";
 const Callback = () => {
     const navigate = useNavigate();
 
@@ -25,10 +25,11 @@ const Callback = () => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
             headers.append('Accept', 'application/json');
-            headers.append('Origin', 'https://4cfw3zvk-8888.inc1.devtunnels.ms');
+            headers.append('Origin', FRONTEND_URL);
 
 
-            fetch('https://4cfw3zvk-5000.inc1.devtunnels.ms/auth/github', {
+
+            fetch(`${BACKEND_URL}/auth/github`, {
                 method: 'POST',
                 body: JSON.stringify({ codeParams }),
                 headers: headers

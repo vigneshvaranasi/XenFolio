@@ -5,34 +5,113 @@ import { Outlet } from "react-router-dom"
 let foliosData = [
   {
     folioName: 'Folio 1',
-    folioAvatar: 'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
+    folioPreviewImage: 'https://vigneshvaranasi.in/assets/trackcode-BwNHWpi-.png',
     creators: {
-      developerName: ['Developer 1', 'Developer 2', 'Developer 3'],
-      designerName: ['Designer 1', 'Designer 2', 'Designer 3'],
+      developers: [
+        {
+          name: "Developer 1",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        },
+        {
+          name: "Developer 2",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        },
+        {
+          name: "Developer 3",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        }
+      ],
+      designers: [
+        {
+          name: "Designer 1",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        },
+        {
+          name: "Designer 2",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        },
+        {
+          name: "Designer 3",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        }
+      ],
     },
-    likes:['user 1 ', 'user 2', 'user 3']
+    likes: ['user 1 ', 'user 2', 'user 3']
   },
   {
     folioName: 'Folio 2',
-    folioAvatar: 'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
+    folioPreviewImage: 'https://pavanc.me/_next/static/media/xenKitPreview.804810cb.gif',
     creators: {
-      developerName: ['Developer 1', 'Developer 2', 'Developer 3'],
-      designerName: ['Designer 1', 'Designer 2', 'Designer 3'],
+      developers: [
+        {
+          name: "Developer 1",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        },
+        {
+          name: "Developer 2",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        },
+        {
+          name: "Developer 3",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        }
+      ],
+      designers: [
+        {
+          name: "Designer 1",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        },
+        {
+          name: "Designer 2",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        },
+        {
+          name: "Designer 3",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        }
+      ],
     },
-    likes:['user 1 ', 'user 2', 'user 3']
+    likes: ['user 1 ', 'user 2', 'user 3']
   },
   {
-    folioName: 'FolioName',
-    folioAvatar: 'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
+    folioName: 'Folio 3',
+    folioPreviewImage: 'https://pavanc.me/_next/static/media/askItPreview.de769a9d.gif',
     creators: {
-      developerName: ['Developer 1', 'Developer 2', 'Developer 3'],
-      designerName: ['Designer 1', 'Designer 2', 'Designer 3'],
+      developers: [
+        {
+          name: "Developer 1",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        },
+        {
+          name: "Developer 2",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        },
+        {
+          name: "Developer 3",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        }
+      ],
+      designers: [
+        {
+          name: "Designer 1",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        },
+        {
+          name: "Designer 2",
+          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
+        },
+        {
+          name: "Designer 3",
+          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
+        }
+      ],
     },
-    likes:['user 1 ', 'user 2', 'user 3']
+    likes: ['user 1 ', 'user 2', 'user 3']
   }
 ]
 
 const FoliosPage = () => {
+  // useContext to get foliosData
 
   return (
     <div className="flex flex-col justify-center md:pt-6">

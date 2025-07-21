@@ -1,10 +1,15 @@
+export interface Person{
+    name: string,
+    avatar: string
+}
+
 type FolioCardProps = {
     folio: {
         folioName: string,
-        folioAvatar: string,
+        folioPreviewImage: string,
         creators: {
-            developerName: Array<string>,
-            designerName: Array<string>
+            developers: Person[],
+            designers: Person[]
         },
         likes: Array<string>
     }
@@ -23,7 +28,7 @@ const FolioCard = ({ folio }: FolioCardProps) => {
             <div className="hover:backdrop-brightness-75"
             >
 
-                <img className="rounded-t-lg " src={folio.folioAvatar} alt={folio.folioName} />
+                <img className="rounded-t-lg " src={folio.folioPreviewImage} alt={folio.folioName} />
             </div>
 
             <div className="px-2 flex justify-between items-center">

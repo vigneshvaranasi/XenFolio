@@ -1,7 +1,7 @@
 import React, { createContext } from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
-
+import { BACKEND_URL, FRONTEND_URL } from '../../config';
 const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
 // console.log(CLIENT_ID)
 export type UserType = {
@@ -48,11 +48,11 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
             headers.append('Accept', 'application/json');
-            headers.append('Origin', 'https://4cfw3zvk-8888.inc1.devtunnels.ms');
+            headers.append('Origin', FRONTEND_URL);
             headers.append('token', currToken);
             setAccessToken(localStorage.getItem('accessToken'));
             // setIsLoggedIn(true);
-            fetch('https://4cfw3zvk-5000.inc1.devtunnels.ms/auth/verify', {
+            fetch(`${BACKEND_URL}/auth/verify`, {
                 method: 'POST',
                 headers: headers
             })

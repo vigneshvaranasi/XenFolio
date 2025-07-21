@@ -35,7 +35,7 @@ const MySpacePage = () => {
         Hey {UserContext.user ? UserContext.user.username : 'Guest'}!
       </h1>
       <div className='flex flex-col'>
-        <h1 className='text-2xl mb-5' >Your Craft Benchs</h1>
+        <h1 className='text-2xl mb-5' >Your Craft Benches</h1>
         <div className="flex flex-col md:flex-row items-stretch flex-wrap gap-2 w-full">
           {
             userData.craftBenches.map((bench, index) => {
