@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import FolioCard from "../components/ui/FolioCard"
-import { Outlet } from "react-router-dom"
 
 let foliosData = [
   {
@@ -114,7 +113,7 @@ const FoliosPage = () => {
   // useContext to get foliosData
 
   return (
-    <div className="flex flex-col justify-center md:pt-6">
+    <div className="flex flex-col justify-center pt-4 md:pt-6">
       <h1 className='text-3xl md:text-4xl mb-8'>Folios</h1>
       <div className={
         `flex flex-col md:flex-row w-full flex-wrap

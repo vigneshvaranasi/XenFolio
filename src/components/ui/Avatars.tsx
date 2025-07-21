@@ -50,6 +50,7 @@ const Avatars: React.FC<AvatarsProps> = ({ images, variant }) => {
                 showToolTip='On Hover'
                 position='top'
                 backgroundColor='#0c0d10'
+                borderColor='#535353'
                 >
               <motion.img
                 src={currImg}

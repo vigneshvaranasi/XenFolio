@@ -12,12 +12,13 @@ function Navbar() {
       className={`
               bg-navBar border border-[#363F43]
               flex flex-row justify-between items-center
-              px-4 py-2 sticky top-4 z-100 w-11/12 md:w-8/12 mx-auto
+              px-4 py-2 sticky top-8 w-11/12 md:w-8/12 mx-auto
               backdrop-blur-lg rounded-lg backdrop-brightness-100 font-afacad
             `}
+      style={{ zIndex: 1000 }}
     >
       <Link to='/'>
-        <div className={`opacity-100 text-white text-2xl hover:text-neutral-200`}>CreateFolio</div>
+        <div className={`opacity-100 text-white text-2xl hover:text-neutral-200`}>XenFolio</div>
       </Link>
 
       <div className='flex flex-row justify-between items-center gap-0'>

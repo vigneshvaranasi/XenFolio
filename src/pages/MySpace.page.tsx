@@ -30,7 +30,7 @@ const MySpacePage = () => {
     console.log('MySpace: UserContext: ', UserContext);
   }, [UserContext])
   return (
-    <div className='flex flex-col justify-center md:pt-6'>
+    <div className='flex flex-col justify-center pt-10 md:pt-14'>
       <h1 className='text-3xl md:text-4xl mb-8'>
         Hey {UserContext.user ? UserContext.user.username : 'Guest'}!
       </h1>

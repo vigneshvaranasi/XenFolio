@@ -5,6 +5,7 @@ interface TooltipProps {
   text?: string
   children?: React.ReactNode
   backgroundColor?: string
+  borderColor?: string
   textColor?: string
   position?: 'top' | 'bottom' | 'left' | 'right'
   arrow?: boolean
@@ -15,6 +16,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   text = 'Tooltip',
   children,
   backgroundColor = '#333',
+  borderColor = '#333',
   textColor = '#fff',
   position = 'top',
   arrow = true,
@@ -84,7 +86,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         return {
           ...base,
           borderWidth: '6px 6px 0 6px',
-          borderColor: `${backgroundColor} transparent transparent transparent`,
+          borderColor: `${borderColor} transparent transparent transparent`,
           left: '50%',
           top: '100%',
           transform: 'translateX(-50%)'
@@ -93,7 +95,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         return {
           ...base,
           borderWidth: '0 6px 6px 6px',
-          borderColor: `transparent transparent ${backgroundColor} transparent`,
+          borderColor: `transparent transparent ${borderColor} transparent`,
           left: '50%',
           bottom: '100%',
           transform: 'translateX(-50%)'
@@ -102,7 +104,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         return {
           ...base,
           borderWidth: '6px 0 6px 6px',
-          borderColor: `transparent transparent transparent ${backgroundColor}`,
+          borderColor: `transparent transparent transparent ${borderColor}`,
           right: '-6px',
           top: '50%',
           transform: 'translateY(-50%)'
@@ -111,7 +113,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         return {
           ...base,
           borderWidth: '6px 6px 6px 0',
-          borderColor: `transparent ${backgroundColor} transparent transparent`,
+          borderColor: `transparent ${borderColor} transparent transparent`,
           left: '-6px',
           top: '50%',
           transform: 'translateY(-50%)'
@@ -133,14 +135,14 @@ const Tooltip: React.FC<TooltipProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ ease: 'easeInOut', duration: 0.2 }}
-          className={`${position} border-2 border-white`}
+          className={`${position} border-2 border-[${borderColor}]`}
           style={{
             backgroundColor,
             color: textColor,
-            borderRadius: '4px',
+            borderRadius: '8px',
             position: 'absolute',
             padding: '5px 10px',
-            zIndex: 1000,
+            zIndex: 1,
             whiteSpace: 'nowrap',
             ...getPositionStyle()
           }}

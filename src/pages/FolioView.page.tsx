@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Button from "../components/ui/Button";
-import Contributors from "../components/ui/Contributors";
 import Avatars from "../components/ui/Avatars";
 
 
@@ -131,10 +130,10 @@ const FolioViewPage = () => {
   // console.log("Hello, folioName:", folioName);
 
   return (
-    <div className="md:pt-6">
+    <div className="pt-4 md:pt-6">
       <div className="flex flex-row justify-between w-full mb-2">
         <div className="flex flex-col">
-          <h1 className=' text-3xl md:text-4xl mb-2'>
+          <h1 className=' text-3xl md:text-2xl mb-2'>
             <Link to='/folios'>Folios </Link>
             / {folioName}
           </h1>
