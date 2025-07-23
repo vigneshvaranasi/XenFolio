@@ -2,13 +2,17 @@
 import { Link } from 'react-router-dom'
 import { useUserContext } from '../hooks/useUserContext'
 import ProfileButton from './ProfileButton'
+import {motion} from 'framer-motion'
 
 function Navbar() {
 
   const UserContext = useUserContext();
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: -40, filter: "blur(10px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
       className={`
               bg-navBar border border-[#363F43]
               flex flex-row justify-between items-center
@@ -55,7 +59,7 @@ function Navbar() {
         {/* </div> */}
       </div>
 
-    </div>
+    </motion.div>
   )
 }
 

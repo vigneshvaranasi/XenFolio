@@ -133,10 +133,15 @@ const FolioViewPage = () => {
     <div className="pt-4 md:pt-6">
       <div className="flex flex-row justify-between w-full mb-2">
         <div className="flex flex-col">
-          <h1 className=' text-3xl md:text-2xl mb-2'>
-            <Link to='/folios'>Folios </Link>
-            / {folioName}
-          </h1>
+          <p className='text-3xl md:text-2xl mb-2'>
+            <Link className="font-light" to='/folios'>Folios </Link>
+            <span className="font-light text-gray-500">
+            / 
+            </span>
+            <span className="pl-2 font-medium">
+              {folioName}
+            </span>
+          </p>
           <div className="flex gap-2">
             <Button text="Get This" variant="secondary" className="text-white" />
             <Button text="Preview" variant="secondary" className="text-white" />

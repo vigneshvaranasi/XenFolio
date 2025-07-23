@@ -25,7 +25,7 @@ const Avatars: React.FC<AvatarsProps> = ({ images, variant }) => {
           return (
             <motion.div
               key={idx}
-              className={`w-8 h-w-8 rounded-full -ml-4 first:ml-0 relative shadow-md cursor-pointer`}
+              className={`w-8 h-w-8 rounded-full -ml-4 first:ml-0 relative cursor-pointer`}
               whileHover={
                 variant === 'bounce'
                   ? { scale: 1.2 }
@@ -55,7 +55,7 @@ const Avatars: React.FC<AvatarsProps> = ({ images, variant }) => {
               <motion.img
                 src={currImg}
                 alt={`avatar-${idx}`}
-                className='w-full h-full object-cover rounded-full border-2 border-black'
+                className='w-full h-full object-cover rounded-full border border-black'
               />
               </Tooltip>
             </motion.div>
