@@ -2,30 +2,11 @@ import { useEffect } from 'react'
 import { useUserContext } from '../hooks/useUserContext';
 import CraftBenchCard from '../components/CraftBenchCard';
 import { Link } from 'react-router-dom';
+import { Meta } from '../types/folioConfig';
 
 const MySpacePage = () => {
   let UserContext = useUserContext();
-
-  let userData =
-  {
-    username: 'Vignesh',
-    craftBenches: [
-      {
-        benchName: 'Craft Bench 1',
-        folioName: 'Folio 1',
-        repoName: 'Repo_1',
-        status: 'published',
-        folioAvatar: 'https://avatars.githubusercontent.com/u/180741475?v=4',
-      },
-      // {
-      //   benchName: 'Craft Bench 2',
-      //   folioName: 'Folio 2',
-      //   repoName: 'Repo_2',
-      //   status: 'inProgress',
-      //   folioAvatar: 'https://avatars.githubusercontent.com/u/180741475?v=4',
-      // }
-    ]
-  };
+  const { user } = UserContext;
   useEffect(() => {
     console.log('MySpace: UserContext: ', UserContext);
   }, [UserContext])
@@ -38,13 +19,12 @@ const MySpacePage = () => {
         <h1 className='text-2xl mb-5' >Your Craft Benches</h1>
         <div className="flex flex-col md:flex-row items-stretch flex-wrap gap-2 w-full">
           {
-            userData.craftBenches.map((bench, index) => {
+            user?.craftBenches.map((bench:Meta, index) => {
               return (
-                <CraftBenchCard key={index} bench={bench} username={userData.username} />
+                <CraftBenchCard key={index} bench={bench} username={user?.username} />
               )
             })
           }
-
           <Link to='/folios' className='md:w-[48%] flex justify-center items-center                 
                bg-[#68686811]  text-neutral-300                  
                 hover:bg-[#68686811] hover:border-[#53535380]

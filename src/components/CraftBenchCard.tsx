@@ -1,12 +1,7 @@
 import githubLogo from '../assets/githubLogo.svg'
+import { Meta } from '../types/folioConfig'
 type CraftBenchCardProps = {
-    bench: {
-        benchName: string,
-        folioName: string,
-        repoName: string,
-        status: string,
-        folioAvatar: string
-    }
+    bench: Meta
     username: string
 }
 
@@ -26,17 +21,18 @@ function CraftBenchCard(benchData: CraftBenchCardProps) {
             <div className="flex items-center">
                 <div className='flex flex-col'>
                     <div className='flex items-center'>
-                        <img src={benchData.bench.folioAvatar} className="w-8 h-8 rounded-full mr-3" alt="" />
+                        <img src={benchData.bench.folioAvatar||'https://avatars.githubusercontent.com/u/180741475?v=4'} className="w-8 h-8 rounded-full mr-3" alt="" />
                         <div className="flex flex-col">
-                            <h1 className="text-xl text-[#e6edf3]">{benchData.bench.benchName}</h1>
+                            <h1 className="text-xl text-[#e6edf3]">{benchData.bench.craftName}</h1>
                             <h2 className="text-sm text-[#e6edf3]">{benchData.bench.folioName}</h2>
                         </div>
                     </div>
                     <div  className='mt-2 rounded-full bg-[#1A1A1A] w-fit drop-shadow-[0_0_10px_#1A1A1A12] font-sans font-semibold'>
-                        <a href={`https://github.com/${benchData.username}/${benchData.bench.repoName}`}>
+                        <a href={`https://github.com/${benchData.username}/${benchData.bench.repoLink}`}>
                             <div className='flex items-center  px-2 py-1'>                                <img src={githubLogo} className='w-4 h-4' alt="" />
                                 <p className='ml-1 lowercase text-sm'>
-                                    {benchData.username}/{benchData.bench.repoName}
+                                    {/* {benchData.username}/{benchData.bench.repoName} */}
+                                    {benchData.username}/to-do-reponame
                                 </p>
                             </div>
                         </a>

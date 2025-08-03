@@ -10,9 +10,9 @@ function Navbar() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -40, filter: "blur(10px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
+      // initial={{ opacity: 0, y: -40, filter: "blur(10px)" }}
+      // animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      // transition={{ duration: 0.6, ease: "easeInOut" }}
       className={`
               bg-navBar border border-[#363F43]
               flex flex-row justify-between items-center

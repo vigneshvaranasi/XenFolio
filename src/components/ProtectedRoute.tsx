@@ -11,7 +11,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
     if(loading) {
         return (
             //ToDo Loading animation
-            <div></div>
+            <div className=''>
+                
+            </div>
         );
     }
     if(!isLoggedIn) {

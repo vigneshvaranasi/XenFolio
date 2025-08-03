@@ -5,7 +5,7 @@ import { BACKEND_URL, FRONTEND_URL } from "../config";
 const Callback = () => {
     const navigate = useNavigate();
 
-    const { setIsLoggedIn, isLoggedIn, code, setCode, setUser, setAccessToken } = useUserContext();
+    const { setIsLoggedIn, setCode, setUser, setAccessToken } = useUserContext();
 
     useEffect(() => {
         // Set Color whole color to black
@@ -40,7 +40,9 @@ const Callback = () => {
                         // console.log('Access Token: ', data.message);
                         setAccessToken(data.message);
                         localStorage.setItem('accessToken', data.message);
-                        setUser({ username: data.userData.login, avatar_url: data.userData.avatar_url });
+                        // console.log(data.dbData);
+                        // console.log('data: ', data);
+                        setUser({ username: data.userData.login, avatar_url: data.userData.avatar_url, isRecentConfig: false, craftBenches: [] });
                         setIsLoggedIn(true);
                         navigate('/myspace');
                     } else {
@@ -60,24 +62,3 @@ const Callback = () => {
     )
 }
 export default Callback;
-
-// if (code) {
-//   console.log('GitHub OAuth Code: ', code);
-//   // Fetch access token from backend using the OAuth code
-//   fetch('https://4cfw3zvk-5000.inc1.devtunnels.ms/auth/github/callback', {
-//     method: 'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({ code }),
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       if (data.success) {
-//         console.log('Access Token: ', data.message.access_token);
-//         setAccessToken(data.message.access_token);
-//         setUsername(data.userData.login);
-//       } else {
-//         console.error('Error: ', data.message);
-//       }
-//     })
-//     .catch((error) => console.error('Error fetching access token:', error));
-// }
