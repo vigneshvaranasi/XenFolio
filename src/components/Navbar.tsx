@@ -7,6 +7,8 @@ import {motion} from 'framer-motion'
 function Navbar() {
 
   const UserContext = useUserContext();
+  const {isLoggedIn, user} = UserContext
+
 
   return (
     <motion.div
@@ -31,15 +33,15 @@ function Navbar() {
         </Link>
 
         {
-          UserContext.isLoggedIn ?
+          isLoggedIn && user ?
             <>
               <Link to='myspace' className='text-lg mr-4'>
                 MySpace
               </Link>
 
               <ProfileButton
-                username={UserContext.user?.username!}
-                avatar_url={UserContext.user?.avatar_url!}
+                username={user.username}
+                avatar_url={user.avatar_url}
               />
             </>
             :

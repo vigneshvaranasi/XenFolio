@@ -32,12 +32,18 @@
 // }
 // export default ProfileButton;
 
-import { UserType } from "../store/UserStore/UserContext";
+
 import { useState, useEffect, useRef } from "react";
 import Button from "./ui/Button";
 import { useUserContext } from '../hooks/useUserContext';
 
-const ProfileButton = ({ username, avatar_url }: UserType) => {
+type ProfileButtonProps = {
+    username: string;
+    avatar_url: string;
+};
+
+const ProfileButton = ({ username, avatar_url }: ProfileButtonProps) => {
+    console.log('username: ', username);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const {handleLogout} = useUserContext();

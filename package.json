@@ -7,7 +7,7 @@
     "dev": "vite --port 8888",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --port 8888"
   },
   "dependencies": {
     "framer-motion": "^12.23.6",

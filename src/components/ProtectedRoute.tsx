@@ -11,8 +11,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
     if(loading) {
         return (
             //ToDo Loading animation
-            <div className=''>
-                
+            <div className='animate-pulse h-screen flex items-center justify-center'>
+                Loading...
             </div>
         );
     }

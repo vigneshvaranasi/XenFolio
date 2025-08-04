@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 
 
 let foliosData = [
@@ -30,6 +30,8 @@ let foliosData = [
         likes: ['user 1 ', 'user 2', 'user 3']
     }
 ]
+    console.log('foliosData: ', foliosData);
+
 
 const FolioLayout = () => {
 
