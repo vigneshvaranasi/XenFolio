@@ -7,7 +7,7 @@ type ProtectedRouteProps = {
 };
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
-    const { isLoggedIn, loading } = useUserContext();
+    const { isLoggedIn, loading,user } = useUserContext();
     if(loading) {
         return (
             //ToDo Loading animation
@@ -16,7 +16,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
             </div>
         );
     }
-    if(!isLoggedIn) {
+    if(!isLoggedIn && !user) {
         return <Navigate to="/" />;
     }
     return <>{element}</>;

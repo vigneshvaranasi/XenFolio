@@ -43,7 +43,7 @@ type ProfileButtonProps = {
 };
 
 const ProfileButton = ({ username, avatar_url }: ProfileButtonProps) => {
-    console.log('username: ', username);
+    // console.log('username: ', username);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const {handleLogout} = useUserContext();

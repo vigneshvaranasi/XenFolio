@@ -9,9 +9,6 @@ interface AvatarsProps {
 
 const Avatars: React.FC<AvatarsProps> = ({ images, variant }) => {
   const [isHovered, setIsHovered] = useState(false);
-  useEffect(()=>{
-    console.log(images);
-  })
   return (
     <div className='avatars'>
       <motion.div

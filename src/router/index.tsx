@@ -40,7 +40,7 @@ const normalRoutes: RouteObject = {
             element: <ProtectedRoute element={<MySpacePage />} />
         },
         {
-            path: "craftbench",
+            path: "craftbench/:craftBenchName",
             element: <ProtectedRoute element={<CraftBenchPage />} />
         }
     ]

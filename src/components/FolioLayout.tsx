@@ -1,6 +1,4 @@
 import { Outlet } from "react-router-dom"
-
-
 let foliosData = [
     {
         folioName: 'Folio 1',
@@ -30,9 +28,6 @@ let foliosData = [
         likes: ['user 1 ', 'user 2', 'user 3']
     }
 ]
-    console.log('foliosData: ', foliosData);
-
-
 const FolioLayout = () => {
 
     return (

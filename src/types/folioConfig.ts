@@ -38,7 +38,7 @@ export type FolioConfig = {
 export type Meta = {
   folioName: string;
   folioAvatar: string;
-  craftId: string;
+  craftId?: string;
   craftName: string;
   repoLink?: string;
   status: "inProgress" | "published";

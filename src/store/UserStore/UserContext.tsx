@@ -63,7 +63,6 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
           // console.log(data.success);
           if (data.success) {
             // console.log('Access Token: ', data.message);
-            console.log('Verifed Access Token from Local Storage')
             setAccessToken(data.message)
             localStorage.setItem('accessToken', data.message)
             setUser({
