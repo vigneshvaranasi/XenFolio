@@ -10,18 +10,46 @@ export type CraftBenchContextType = {
 }
 
 
-export const CraftBenchContext = createContext({
-  folioConfig: null as FolioConfig | null,
+const defaultFolioConfig: FolioConfig = {
+  personalInformation: {
+    name: '',
+    email: '',
+    bio: '',
+    about: '',
+    githubLink: '',
+    linkedinLink: '',
+    twitterLink: '',
+    resumeLink: ''
+  },
+  skills: {
+    languages: undefined,
+    tools: undefined,
+    frameworks: undefined
+  },
+  projects: [],
+  workExperience: []
+}
+
+export const CraftBenchContext = createContext<{
+  folioConfig: FolioConfig | null;
+  setFolioConfig: React.Dispatch<React.SetStateAction<FolioConfig | null>>;
+  clearCraftBench: () => void;
+  meta: Meta | null;
+  setMeta: React.Dispatch<React.SetStateAction<Meta | null>>;
+}>({
+  folioConfig: defaultFolioConfig,
   setFolioConfig: (()=>{}) as React.Dispatch<React.SetStateAction<FolioConfig | null>>,
   clearCraftBench: () => {},
-  meta : null as Meta | null,
+  meta : null,
   setMeta: (()=>{}) as React.Dispatch<React.SetStateAction<Meta | null>>
 })
 
 export const CraftBenchProvider: React.FC<{ children: React.ReactNode }> = ({
   children
 }) => {
-  const [folioConfig, setFolioConfig] = useState<FolioConfig | null>(null);
+  const [folioConfig, setFolioConfig] = useState<FolioConfig | null>(
+    defaultFolioConfig
+  );
   const [meta, setMeta] = useState<Meta | null>(null);
 
 

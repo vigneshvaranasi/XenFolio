@@ -155,11 +155,6 @@ const FolioViewPage = () => {
   const craftBenchNameRef = useRef<HTMLInputElement>(null)
 
   // useContext to get foliosData
-  let currFolio = foliosData.find(folio => {
-    let currFolioName = folio.folioName.split(' ').join('')
-    return currFolioName === folioName
-  })
-
   // console.log("Hello, folioName:", folioName);
 
   return (
@@ -200,13 +195,12 @@ const FolioViewPage = () => {
         ></iframe>
       </div>
       <Modal isOpen={getThisModal} onClose={() => setGetThisModal(false)}>
-        <div className='flex flex-col gap-4'></div>
         <InputBox
           key={'folioName'}
           ref={craftBenchNameRef}
           label='Craft Bench Name'
         />
-        <div className='flex justify-between'>
+        <div className='flex justify-between mt-2'>
           <Button
             text='Create New'
             variant='secondary'
@@ -215,7 +209,7 @@ const FolioViewPage = () => {
               handleCreateCraftBench()
             }}
           />
-          {!user?.isRecentConfig && (
+          {user?.isRecentConfig && (
             <Button
               text='Use Recent Config'
               variant='secondary'
