@@ -38,7 +38,7 @@ const InputBox = forwardRef<HTMLInputElement, InputBoxProps>(
           type={type}
           onChange={onChange}
           placeholder={placeholder}
-          className={`w-80 border p-1.5 rounded-lg bg-[#181e24] shadow-md focus:outline-none ${
+          className={` w-80 border p-1.5 rounded-lg bg-[#181e24] shadow-md focus:outline-none ${
             error ? 'border-red-500' : 'border-[#363F43]'
           } ${className ?? ''}`}
         />

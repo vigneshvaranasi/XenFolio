@@ -2,131 +2,41 @@ import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import Button from '../components/ui/Button'
 import Avatars from '../components/ui/Avatars'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Modal from '../components/ui/Modal'
 import InputBox from '../components/ui/InputBox'
 import { useUserContext } from '../hooks/useUserContext'
 import { useCraftBenchContext } from '../hooks/useCraftBenchContext'
 import { useNavigate } from "react-router-dom";
-
-
-let foliosData = [
-  {
-    folioName: 'Folio 1',
-    folioPreviewImage:
-      'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
-    creators: {
-      developers: [
-        {
-          name: 'Developer 1',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        },
-        {
-          name: 'Developer 2',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        },
-        {
-          name: 'Developer 3',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        }
-      ],
-      designers: [
-        {
-          name: 'Designer 1',
-          avatar: 'https://avatars.githubusercontent.com/u/134832213?v=4'
-        },
-        {
-          name: 'Designer 2',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        },
-        {
-          name: 'Designer 3',
-          avatar: 'https://avatars.githubusercontent.com/u/134832213?v=4'
-        }
-      ]
-    },
-    likes: ['user 1 ', 'user 2', 'user 3']
-  },
-  {
-    folioName: 'Folio 2',
-    folioPreviewImage:
-      'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
-    creators: {
-      developers: [
-        {
-          name: 'Developer 1',
-          avatar: 'https://avatars.githubusercontent.com/u/134832213?v=4'
-        },
-        {
-          name: 'Developer 2',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        },
-        {
-          name: 'Developer 3',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        }
-      ],
-      designers: [
-        {
-          name: 'Designer 1',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        },
-        {
-          name: 'Designer 2',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        },
-        {
-          name: 'Designer 3',
-          avatar: 'https://avatars.githubusercontent.com/u/134832213?v=4'
-        }
-      ]
-    },
-    likes: ['user 1 ', 'user 2', 'user 3']
-  },
-  {
-    folioName: 'Folio 3',
-    folioPreviewImage:
-      'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
-    creators: {
-      developers: [
-        {
-          name: 'Developer 1',
-          avatar: 'https://avatars.githubusercontent.com/u/134832213?v=4'
-        },
-        {
-          name: 'Developer 2',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        },
-        {
-          name: 'Developer 3',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        }
-      ],
-      designers: [
-        {
-          name: 'Designer 1',
-          avatar: 'https://avatars.githubusercontent.com/u/134832213?v=4'
-        },
-        {
-          name: 'Designer 2',
-          avatar: 'https://avatars.githubusercontent.com/u/121240801?v=4'
-        },
-        {
-          name: 'Designer 3',
-          avatar: 'https://avatars.githubusercontent.com/u/134832213?v=4'
-        }
-      ]
-    },
-    likes: ['user 1 ', 'user 2', 'user 3']
-  }
-]
-
-let folioCreators: string[] = foliosData[0].creators.developers.map(
-  folio => folio.avatar
-)
+import { getAvatarByUsername, getFolioByName } from '../handler/folioHandlers'
+import { Folio } from '../types/folioConfig'
 
 const FolioViewPage = () => {
   const { folioName } = useParams<{ folioName: string }>();
+  const [currFolio,setCurrFolio] = useState<Folio|null>(null);
+  const [creators, setCreators] = useState<{
+    githubUsername: string;
+    avatarUrl: string;
+  }[]>([]);
+
+  useEffect(()=>{
+    if(!folioName) {
+      console.error('Folio name is not provided');
+      return;
+    }else{
+      getFolioByName(folioName).then(folio => {
+        setCurrFolio(folio);
+        let creatorAvatars = folio.creator.developedBy.map((user:any) => getAvatarByUsername(user.githubUsername));
+        Promise.all(creatorAvatars).then(avatars => {
+          
+          setCreators(avatars.map((avatar, index) => ({
+            githubUsername: folio.creator.developedBy[index].githubUsername,
+            avatarUrl: avatar
+          })));
+        });
+      });
+    }
+  },[folioName])
 
 
   const [getThisModal, setGetThisModal] = useState(false)
@@ -142,10 +52,11 @@ const FolioViewPage = () => {
         return
       }
       setMeta({
-        folioName: folioName ?? '',
-        folioAvatar: 'https://avatars.githubusercontent.com/u/121240801?v=4',
+        folioName: currFolio?.folioName || folioName || "",
+        folioAvatar: currFolio?.folioAvatar || '',
         craftName: craftBenchNameRef.current.value,
-        status: 'inProgress'
+        status: 'inProgress',
+        folioId: currFolio?._id || '',
       })
       setGetThisModal(false)
       navigate(`/craftbench/${craftBenchNameRef.current.value.split(' ').join('')}`)
@@ -187,11 +98,11 @@ const FolioViewPage = () => {
           </div>
         </div>
         <div className='flex md:justify-end text-lg mb-2'>
-          <Avatars images={folioCreators} variant='elastic' />
+          <Avatars creators={creators} variant='elastic' />
         </div>
         <iframe
           className='w-full bg-white h-[60vh] md:h-[65vh] rounded-t-lg'
-          src='https://askitengine.centralindia.cloudapp.azure.com/'
+          src={currFolio?.previewLink}
         ></iframe>
       </div>
       <Modal isOpen={getThisModal} onClose={() => setGetThisModal(false)}>

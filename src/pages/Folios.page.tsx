@@ -1,117 +1,20 @@
 import { Link } from "react-router-dom"
 import FolioCard from "../components/ui/FolioCard"
+import { useEffect, useState } from "react"
+import { getAllFolios } from "../handler/folioHandlers"
+import { Folio } from "../types/folioConfig";
 
-let foliosData = [
-  {
-    folioName: 'Folio 1',
-    folioPreviewImage: 'https://vigneshvaranasi.in/assets/trackcode-BwNHWpi-.png',
-    creators: {
-      developers: [
-        {
-          name: "Developer 1",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        },
-        {
-          name: "Developer 2",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        },
-        {
-          name: "Developer 3",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        }
-      ],
-      designers: [
-        {
-          name: "Designer 1",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        },
-        {
-          name: "Designer 2",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        },
-        {
-          name: "Designer 3",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        }
-      ],
-    },
-    likes: ['user 1 ', 'user 2', 'user 3']
-  },
-  {
-    folioName: 'Folio 2',
-    folioPreviewImage: 'https://pavanc.me/_next/static/media/xenKitPreview.804810cb.gif',
-    creators: {
-      developers: [
-        {
-          name: "Developer 1",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        },
-        {
-          name: "Developer 2",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        },
-        {
-          name: "Developer 3",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        }
-      ],
-      designers: [
-        {
-          name: "Designer 1",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        },
-        {
-          name: "Designer 2",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        },
-        {
-          name: "Designer 3",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        }
-      ],
-    },
-    likes: ['user 1 ', 'user 2', 'user 3']
-  },
-  {
-    folioName: 'Folio 3',
-    folioPreviewImage: 'https://pavanc.me/_next/static/media/askItPreview.de769a9d.gif',
-    creators: {
-      developers: [
-        {
-          name: "Developer 1",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        },
-        {
-          name: "Developer 2",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        },
-        {
-          name: "Developer 3",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        }
-      ],
-      designers: [
-        {
-          name: "Designer 1",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        },
-        {
-          name: "Designer 2",
-          avatar: "https://avatars.githubusercontent.com/u/121240801?v=4"
-        },
-        {
-          name: "Designer 3",
-          avatar: "https://avatars.githubusercontent.com/u/134832213?v=4"
-        }
-      ],
-    },
-    likes: ['user 1 ', 'user 2', 'user 3']
-  }
-]
 
 const FoliosPage = () => {
-  // useContext to get foliosData
-
+  const [foliosData, setFoliosData] = useState<Folio[]>([]);
+  useEffect(()=>{
+    getAllFolios().then((data)=>{
+      if(data && data.length > 0) {
+        setFoliosData(data)
+      }
+    })
+  },[])
+  
   return (
     <div className="flex flex-col justify-center pt-4 md:pt-6">
       <h1 className='text-3xl md:text-4xl mb-8'>Folios</h1>
@@ -121,10 +24,10 @@ const FoliosPage = () => {
          `
       }>
         {
-          foliosData.map((folio, index) => {
+          foliosData && foliosData.map((folio, index) => {
             return (
-              <Link className=" md:w-[48%]" to={`/folios/${folio.folioName.split(' ').join('')}`} key={index}>
-                <FolioCard key={index} folio={folio} />
+              <Link className=" md:w-[48%]" to={`/folios/${folio.folioName.split(' ').join('')}`} key={index} >
+                <FolioCard key={folio._id} folio={folio} />
               </Link>
             )
           })

@@ -13,14 +13,18 @@ export type Skills = {
   tools?: string[];
   frameworks?: string[];
 };
-export type Projects = {
+
+export type Project={
   title: string;
   description: string;
   techStack: string[];
   image: string;
   repoLink: string;
   liveLink: string;
-}[];
+}
+
+export type Projects = Project[];
+
 export type WorkExperience = {
   role: string;
   company: string;
@@ -36,6 +40,7 @@ export type FolioConfig = {
 };
 
 export type Meta = {
+  folioId: string;
   folioName: string;
   folioAvatar: string;
   craftId?: string;
@@ -44,4 +49,20 @@ export type Meta = {
   status: "inProgress" | "published";
   createdAt?: string;
   lastUpdated?: string;
+};
+
+export type Folio = {
+  _id: string;
+  folioName: string;
+  folioAvatar: string;
+  creator: {
+    developedBy: {
+      _id: string;
+      name: string;
+      githubUsername: string;
+    }[];
+    _id: string;
+  };
+  previewLink: string;
+  previewImageLink: string;
 };

@@ -1,13 +1,16 @@
 import { motion } from 'framer-motion'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Tooltip from './Tooltip'
 
 interface AvatarsProps {
-  images: string[]
+  creators: {
+    githubUsername: string;
+    avatarUrl: string;
+  }[],
   variant: 'elastic' | 'bounce' | 'raise'
 }
 
-const Avatars: React.FC<AvatarsProps> = ({ images, variant }) => {
+const Avatars: React.FC<AvatarsProps> = ({ creators, variant }) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <div className='avatars'>
@@ -16,7 +19,7 @@ const Avatars: React.FC<AvatarsProps> = ({ images, variant }) => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {images.map((currImg, idx) => {
+        {creators.map((creator, idx) => {
           const isElastic = variant === 'elastic'
           const shouldStack = !isElastic || !isHovered
           return (
@@ -43,14 +46,14 @@ const Avatars: React.FC<AvatarsProps> = ({ images, variant }) => {
               }}
             >
               <Tooltip 
-                text='vigneshvaranasi' 
+                text={creator.githubUsername}
                 showToolTip='On Hover'
                 position='top'
                 backgroundColor='#0c0d10'
                 borderColor='#535353'
                 >
               <motion.img
-                src={currImg}
+                src={creator.avatarUrl}
                 alt={`avatar-${idx}`}
                 className='w-full h-full object-cover rounded-full border border-black'
               />

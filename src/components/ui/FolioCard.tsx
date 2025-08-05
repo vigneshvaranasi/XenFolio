@@ -1,21 +1,9 @@
-export interface Person{
-    name: string,
-    avatar: string
-}
+import { Folio } from "../../types/folioConfig"
 
-type FolioCardProps = {
-    folio: {
-        folioName: string,
-        folioPreviewImage: string,
-        creators: {
-            developers: Person[],
-            designers: Person[]
-        },
-        likes: Array<string>
-    }
-}
+type FolioCardProps = {folio: Folio}
 
 const FolioCard = ({ folio }: FolioCardProps) => {
+    
     return (
         <div className={
             `md:w-full  rounded-lg 
@@ -28,7 +16,7 @@ const FolioCard = ({ folio }: FolioCardProps) => {
             <div className="hover:backdrop-brightness-75"
             >
 
-                <img className="rounded-t-lg h-[220px] object-cover w-full" src={folio.folioPreviewImage} alt={folio.folioName} />
+                <img className="rounded-t-lg h-[220px] object-cover w-full" src={folio.previewImageLink} alt={folio.folioName} />
             </div>
 
             <div className="px-2 flex justify-between items-center">

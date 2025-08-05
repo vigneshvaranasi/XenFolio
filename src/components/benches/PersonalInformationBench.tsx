@@ -1,22 +1,57 @@
 import { useCraftBenchContext } from '../../hooks/useCraftBenchContext'
+import Button from '../ui/Button'
 import InputBox from '../ui/InputBox'
 
-/*
-email: string;
-  bio: string;
-  about: string;
-  githubLink: string;
-  linkedinLink: string;
-  twitterLink: string;
-  resumeLink: string;
-*/
-// Form for Personal Information
 function PersonalInformationBench () {
   const { folioConfig, setFolioConfig } = useCraftBenchContext()
-  const defaultClass = "w-full"
+  function loadDefaultData () {
+    setFolioConfig({
+      personalInformation: {
+        name: 'Dev Duo',
+        email: 'devduocollab@example.com',
+        bio: 'Full Stack Developer',
+        about: 'ex-Intern at [Company] | Full Stack Developer | Web Designer',
+        githubLink: 'https://github.com/username',
+        linkedinLink: 'https://www.linkedin.com/in/username/',
+        twitterLink: 'https://x.com/username',
+        resumeLink: 'https://example.com/resume'
+      },
+      skills: {
+        languages: ['cpp', 'python', 'java', 'javascript', 'typescript'],
+        tools: ['turborepo', 'figma'],
+        frameworks: ['reactjs', 'express']
+      },
+      projects: [
+        {
+          title: 'Trackcode',
+          description: 'Track Code tracks competitive programming performance across platforms, offering insights, rankings, and interactive visualizations with easy filtering and reports.',
+          techStack: ['React', 'Express'],
+          image: 'https://example.com/image.png',
+          repoLink: 'https://github.com/username/project',
+          liveLink: 'https://username.dev'
+        }
+      ],
+      workExperience: [
+        {
+          role: 'Software Developer',
+          company: 'Company Name',
+          techStack: ['Java', 'SpringBoot'],
+          description: 'Spring MVC and Full Stack'
+        }
+      ]
+    })
+  }
+  const defaultClass = 'w-full'
   return (
     <div className='flex flex-col gap-4 mt-4'>
-      <h2 className='text-4xl'>Personal Information</h2>
+      <div className="flex gap-4 justify-between flex-wrap">
+        <h2 className='text-4xl'>Personal Information</h2>
+        <Button
+          text='Load Sample Data'
+          variant='primary'
+          onClick={loadDefaultData}
+        />
+      </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         <InputBox
           label='Name'
