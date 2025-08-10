@@ -40,9 +40,9 @@ const Callback = () => {
                         // console.log('Access Token: ', data.message);
                         setAccessToken(data.message);
                         localStorage.setItem('accessToken', data.message);
-                        // console.log(data.dbData);
+                        console.log(data.dbData);
                         // console.log('data: ', data);
-                        setUser({ username: data.userData.login, avatar_url: data.userData.avatar_url, isRecentConfig: false, craftBenches: [] });
+                        setUser({ username: data.userData.login, avatar_url: data.userData.avatar_url, isRecentConfig: data.dbData.isRecentConfig, craftBenches:data.dbData.craftBenches });
                         setIsLoggedIn(true);
                         navigate('/myspace');
                     } else {

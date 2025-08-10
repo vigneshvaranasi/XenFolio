@@ -12,11 +12,11 @@ const MySpacePage = () => {
   }, [UserContext])
   return (
     <div className='flex flex-col justify-center pt-10 md:pt-14'>
-      <h1 className='text-3xl md:text-4xl mb-8'>
+      <h1 className='text-3xl md:text-2xl mb-8'>
         Hey {UserContext.user ? UserContext.user.username : 'Guest'}!
       </h1>
       <div className='flex flex-col'>
-        <h1 className='text-2xl mb-5' >Your Craft Benches</h1>
+        <h1 className='text-lg mb-2' >Your Craft Benches</h1>
         <div className="flex flex-col md:flex-row items-stretch flex-wrap gap-2 w-full">
           {
             user?.craftBenches.map((bench:Meta, index) => {
@@ -25,12 +25,11 @@ const MySpacePage = () => {
               )
             })
           }
-          <Link to='/folios' className='md:w-[48%] flex justify-center items-center                 
+          <Link to='/folios' className='md:w-[49%] flex justify-center items-center                 
                bg-[#68686811]  text-neutral-300                  
                 hover:bg-[#68686811] hover:border-[#53535380]
                 border border-[#242424] p-2 rounded-lg
-                transition-all-ease-in-out duration-300 text-7xl'>
-
+                transition-all-ease-in-out duration-300 text-3xl h-[100px]'>
             +
         </Link>
 

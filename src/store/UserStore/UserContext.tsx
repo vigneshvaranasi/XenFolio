@@ -8,7 +8,7 @@ const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
 
 type UserContextType = {
   user: User | null
-  setUser: React.Dispatch<React.SetStateAction<User>>
+  setUser: React.Dispatch<React.SetStateAction<User | null>>
   isLoggedIn: boolean
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>
   handleLogin: ({}) => Promise<void>
@@ -27,12 +27,7 @@ type UserContextProviderProps = {
 }
 
 export const UserContextProvider = ({ children }: UserContextProviderProps) => {
-  const [user, setUser] = useState<User>({
-    username: '',
-    avatar_url: '',
-    isRecentConfig: false,
-    craftBenches: []
-  })
+  const [user, setUser] = useState<User | null>(null)
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const [code, setCode] = useState<string | null>(null)
   const [accessToken, setAccessToken] = useState<string | null>(null)
@@ -93,12 +88,8 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
   }
 
   const handleLogout = async () => {
-    setUser({
-      username: '',
-      avatar_url: '',
-      isRecentConfig: false,
-      craftBenches: []
-    })
+    setUser(null)
+    
     setIsLoggedIn(false)
     setCode(null)
     localStorage.clear()
