@@ -44,7 +44,7 @@ function PersonalInformationBench () {
   const defaultClass = 'w-full'
   return (
     <div className='flex flex-col gap-4 mt-4'>
-      <div className="flex gap-4 justify-between flex-wrap">
+      <div className="flex gap-4 justify-between items-center flex-wrap">
         <h2 className='text-4xl'>Personal Information</h2>
         <Button
           text='Load Sample Data'

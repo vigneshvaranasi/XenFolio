@@ -1,9 +1,12 @@
+import { RotatingLines } from "react-loader-spinner";
+
 type ButtonProps = {
     text: string,
     onClick?: any,
     className?: string,
     variant: 'danger' | 'warning' | 'primary' | 'success' | 'secondary',
     disabled?: boolean,
+    loading?:boolean
 }
 
 const variantClasses = {
@@ -14,13 +17,17 @@ const variantClasses = {
     secondary: 'text-[#535353] bg-[#53535312] border-[#535353] hover:shadow-[0_0_10px_#535353]',
 };
 
-const defaultClasses='text-lg rounded-md px-2.5 border hover:backdrop-brightness-50 hover:drop-shadow-2xl transition duration-300'
+const defaultClasses='text-lg rounded-md px-2.5 border hover:backdrop-brightness-50 hover:drop-shadow-2xl transition duration-300 flex justify-around'
 
-const Button = ({ text, variant, className, onClick }: ButtonProps) => {
+const Button = ({ text, variant, className, onClick,disabled=false, loading }: ButtonProps) => {
     return (
         <button className={`${className}  ${variantClasses[variant]} ${defaultClasses}`}
             onClick={onClick}
+            disabled={disabled || loading}
         >
+            {
+                loading && <RotatingLines width="15" strokeColor='#ffffff' />
+            }
             {text}
         </button>
     )

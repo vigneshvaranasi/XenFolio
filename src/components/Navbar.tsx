@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useUserContext } from '../hooks/useUserContext'
 import ProfileButton from './ProfileButton'
 import {motion} from 'framer-motion'
+import { RotatingLines } from 'react-loader-spinner';
 
 function Navbar() {
 
@@ -25,6 +26,7 @@ function Navbar() {
     >
       <Link to='/'>
         <div className={`opacity-100 text-white text-2xl hover:text-neutral-200`}>XenFolio</div>
+        
       </Link>
 
       <div className='flex flex-row justify-between items-center gap-0'>
