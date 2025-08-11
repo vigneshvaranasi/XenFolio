@@ -1,4 +1,3 @@
-import InputBox from "./InputBox";
 
 type NumberCounterProps = {
   count: number;
@@ -6,7 +5,6 @@ type NumberCounterProps = {
   onDecrement: () => void;
   className?: string;
   variant: "danger" | "warning" | "primary" | "success" | "secondary";
-  setCounter?: (value: number) => void;
 };
 const variantClasses = {
   danger: "text-[#EC5959] bg-[#EC595912] border-[#EC5959] ",
@@ -25,7 +23,6 @@ function NumberCounter({
   onDecrement,
   className,
   variant,
-  setCounter,
 }: NumberCounterProps) {
   return (
     <div

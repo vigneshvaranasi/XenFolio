@@ -1,33 +1,4 @@
 import { Outlet } from "react-router-dom"
-let foliosData = [
-    {
-        folioName: 'Folio 1',
-        folioAvatar: 'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
-        creators: {
-            developerName: ['Developer 1', 'Developer 2', 'Developer 3'],
-            designerName: ['Designer 1', 'Designer 2', 'Designer 3'],
-        },
-        likes: ['user 1 ', 'user 2', 'user 3']
-    },
-    {
-        folioName: 'Folio 2',
-        folioAvatar: 'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
-        creators: {
-            developerName: ['Developer 1', 'Developer 2', 'Developer 3'],
-            designerName: ['Designer 1', 'Designer 2', 'Designer 3'],
-        },
-        likes: ['user 1 ', 'user 2', 'user 3']
-    },
-    {
-        folioName: 'FolioName',
-        folioAvatar: 'https://vigneshvaranasi.in/assets/TrackCode-B1EeffBo.png',
-        creators: {
-            developerName: ['Developer 1', 'Developer 2', 'Developer 3'],
-            designerName: ['Designer 1', 'Designer 2', 'Designer 3'],
-        },
-        likes: ['user 1 ', 'user 2', 'user 3']
-    }
-]
 const FolioLayout = () => {
 
     return (

@@ -42,7 +42,7 @@ type ProfileButtonProps = {
     avatar_url: string;
 };
 
-const ProfileButton = ({ username, avatar_url }: ProfileButtonProps) => {
+const ProfileButton = ({ avatar_url }: ProfileButtonProps) => {
     // console.log('username: ', username);
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);

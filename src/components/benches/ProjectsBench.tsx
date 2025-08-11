@@ -58,41 +58,6 @@ function ProjectsBench() {
     });
   };
 
-  const setProjectsCount = (count: number) => {
-    if (count < 0) return;
-
-    setFolioConfig((prevConfig) => {
-      if (!prevConfig) return prevConfig;
-
-      const currentProjects = prevConfig.projects;
-      const currentCount = currentProjects.length;
-
-      if (count > currentCount) {
-        const newProjects = Array.from(
-          { length: count - currentCount },
-          () => ({
-            title: "",
-            description: "",
-            techStack: [],
-            image: "",
-            repoLink: "",
-            liveLink: "",
-          })
-        );
-        return {
-          ...prevConfig,
-          projects: [...currentProjects, ...newProjects],
-        };
-      } else if (count < currentCount) {
-        return {
-          ...prevConfig,
-          projects: currentProjects.slice(0, count),
-        };
-      }
-
-      return prevConfig;
-    });
-  };
 
   return (
     <div className="flex flex-col gap-4 mt-4">
@@ -105,7 +70,6 @@ function ProjectsBench() {
               onIncrement={addProject}
               onDecrement={removeProject}
               variant="primary"
-              setCounter={setProjectsCount}
             />
           </div>
         </div>

@@ -52,36 +52,6 @@ function WorkExperienceBench() {
     });
   };
 
-  const setExperiencesCount = (count: number) => {
-    if (count < 0) return;
-    
-    setFolioConfig(prevConfig => {
-      if (!prevConfig) return prevConfig;
-      
-      const currentExperiences = prevConfig.workExperience;
-      const currentCount = currentExperiences.length;
-      
-      if (count > currentCount) {
-        const newExperiences = Array.from({ length: count - currentCount }, () => ({
-          role: "",
-          company: "",
-          techStack: [],
-          description: "",
-        }));
-        return {
-          ...prevConfig,
-          workExperience: [...currentExperiences, ...newExperiences]
-        };
-      } else if (count < currentCount) {
-        return {
-          ...prevConfig,
-          workExperience: currentExperiences.slice(0, count)
-        };
-      }
-      
-      return prevConfig;
-    });
-  };
   return (
     <div className="flex flex-col gap-4 mt-4">
       <div className={`flex items-center justify-between gap-2`}>
@@ -93,7 +63,6 @@ function WorkExperienceBench() {
               onIncrement={addExperience}
               onDecrement={removeExperience}
               variant="primary"
-              setCounter={setExperiencesCount}
             />
           </div>
         </div>
