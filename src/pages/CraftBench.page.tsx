@@ -65,7 +65,7 @@ const CraftBenchPage = () => {
     setFinishLoading(true);
     try {
       console.log("Finish button clicked");
-      const finishCraftBench = await createCraftBench(folioConfig, meta);
+      const finishCraftBench = await createCraftBench(meta, folioConfig);
       if (finishCraftBench) {
         setMeta({
           craftId: finishCraftBench.craftId,
@@ -137,7 +137,7 @@ const CraftBenchPage = () => {
         console.error("Error publishing to GitHub:", publishStatus.message);
         throw new Error(publishStatus.message);
       } else {
-        toast.success("Your Folio is live at " + publishStatus.url);
+        toast.success("Your Folio is live at " + publishStatus.folioURL);
         console.log(publishStatus);
       }
     } catch (err: any) {
