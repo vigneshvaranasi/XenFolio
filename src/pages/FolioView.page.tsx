@@ -187,7 +187,11 @@ const FolioViewPage = () => {
                 variant="secondary"
                 className="text-white"
                 onClick={() => {
-                  setGetThisModal(true);
+                  if (user) {
+                    setGetThisModal(true);
+                  } else {
+                    toast("Please log in to use this template");
+                  }
                 }}
               />
               <Button

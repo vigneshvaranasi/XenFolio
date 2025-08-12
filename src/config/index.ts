@@ -1,8 +1,3 @@
-// export const BACKEND_URL = 'https://dth5w8dq-3000.inc1.devtunnels.ms';
-// export const FRONTEND_URL = 'https://dth5w8dq-8888.inc1.devtunnels.ms';
-// export const BACKEND_URL = 'https://mdd7t8bl-3000.inc1.devtunnels.ms';
-// export const FRONTEND_URL = 'https://mdd7t8bl-8888.inc1.devtunnels.ms';
-
-// Prod
-export const BACKEND_URL = 'https://folioengine.vercel.app';
-export const FRONTEND_URL = 'https://xenfolio.vercel.app';
+export const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+export const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL

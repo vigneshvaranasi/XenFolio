@@ -1,15 +1,23 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useUserContext } from '../hooks/useUserContext';
 import CraftBenchCard from '../components/CraftBenchCard';
 import { Link } from 'react-router-dom';
-import { Meta } from '../types/folioConfig';
+import { getAllCraftBenches } from '../handler/mySpaceHandlers';
+import { CraftBench } from '../types/mySpace';
 
 const MySpacePage = () => {
   let UserContext = useUserContext();
   const { user } = UserContext;
-  useEffect(() => {
-    console.log('MySpace: UserContext: ', UserContext);
-  }, [UserContext])
+  const [allCraftBenches, setAllCraftBenches] = useState<CraftBench[]>([]);
+
+  useEffect(()=>{
+    async function fetchCraftBenches() {
+      const benches = await getAllCraftBenches();
+      setAllCraftBenches(benches);
+    }
+    fetchCraftBenches();
+  }, [])
+
   return (
     <div className='flex flex-col justify-center pt-10 md:pt-14'>
       <h1 className='text-3xl md:text-2xl mb-8'>
@@ -19,9 +27,9 @@ const MySpacePage = () => {
         <h1 className='text-lg mb-2' >Your Craft Benches</h1>
         <div className="flex flex-col md:flex-row items-stretch flex-wrap gap-2 w-full">
           {
-            user?.craftBenches.map((bench:Meta, index) => {
+            allCraftBenches.map((bench:CraftBench, index) => {
               return (
-                <CraftBenchCard key={index} bench={bench} username={user?.username} />
+                <CraftBenchCard key={index} bench={bench} username={user?.username ?? 'Guest'} />
               )
             })
           }
@@ -40,16 +48,3 @@ const MySpacePage = () => {
 }
 
 export default MySpacePage
-
-
-// {
-//   "_id": "676ebafecac0d4cfec4f4c21",
-//   "username": "pavan-rar",
-//   "avatar": "https://avatars.githubusercontent.com/u/180741475?v=4",
-//   "likes": [],
-//   "craftBenches": [],
-//   "lastLogin": "2024-12-27T14:51:39.475Z",
-//   "createdOn": "2024-12-27T14:34:38.561Z",
-//   "lastCreation": "2024-12-27T14:34:38.561Z",
-//   "__v": 0
-// }

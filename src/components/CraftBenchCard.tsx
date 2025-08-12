@@ -1,13 +1,13 @@
-import githubLogo from "../assets/githubLogo.svg";
-import { Meta } from "../types/folioConfig";
-import { getRepoName } from "../utils/craftBenchUtils";
+import githubLogo from '../assets/githubLogo.svg'
+import { CraftBench } from '../types/mySpace'
+import { getRepoName } from '../utils/craftBenchUtils'
 type CraftBenchCardProps = {
-  bench: Meta;
-  username: string;
-};
+  bench: CraftBench
+  username: string
+}
 
-function CraftBenchCard(benchData: CraftBenchCardProps) {
-  console.log("CraftBenchCard rendered with:", benchData);
+function CraftBenchCard (benchData: CraftBenchCardProps) {
+  // console.log("CraftBenchCard rendered with:", benchData);
   return (
     <div
       className={`craftBenchCard
@@ -19,37 +19,32 @@ function CraftBenchCard(benchData: CraftBenchCardProps) {
                 h-[100px]
                 `}
     >
-      <div className="flex items-center">
-        <div className="flex flex-col">
-          <div className="flex items-center">
+      <div className='flex items-center'>
+        <div className='flex flex-col'>
+          <div className='flex items-center'>
             <img
               src={
-                benchData.bench.folioAvatar ||
-                "https://avatars.githubusercontent.com/u/180741475?v=4"
+                benchData.bench.folioSelectedAvatar ||
+                'https://avatars.githubusercontent.com/u/180741475?v=4'
               }
-              className="w-8 h-8 rounded-full mr-3"
-              alt=""
+              className='w-8 h-8 rounded-full mr-3'
+              alt=''
             />
-            <div className="flex flex-col">
-              <h1 className="text-xl text-[#e6edf3]">
-                {benchData.bench.craftName}
-              </h1>
-              <h2 className="text-sm text-[#e6edf3]">
-                {benchData.bench.folioName}
+            <div className='flex flex-col'>
+              <h1 className='text-xl text-[#e6edf3]'>{benchData.bench.name}</h1>
+              <h2 className='text-sm text-[#e6edf3]'>
+                {benchData.bench.folioSelectedName}
               </h2>
             </div>
           </div>
-          {benchData.bench.status === "published" && (
-            <div className="mt-2 rounded-full bg-[#1A1A1A] w-fit drop-shadow-[0_0_10px_#1A1A1A12] font-sans font-semibold">
-              <a
-                target="_blank"
-                href={`${benchData.bench.repoLink}`}
-              >
-                <div className="flex items-center  px-2 py-1">
-                  <img src={githubLogo} className="w-4 h-4" alt="" />
-                  <p className="ml-1 lowercase text-sm">
-                    {benchData.username}/
-                    {getRepoName(benchData.bench.repoLink || "")}
+          {benchData.bench.status === 'published' && (
+            <div className='mt-2 rounded-full bg-[#1A1A1A] w-fit drop-shadow-[0_0_10px_#1A1A1A12] font-sans font-semibold'>
+              <a target='_blank' href={`${benchData.bench.repoLink}`}>
+                <div className='flex items-center  px-2 py-1'>
+                  <img src={githubLogo} className='w-4 h-4' alt='' />
+                  <p className='ml-1 lowercase text-sm'>
+                    <span className={`hidden md:inline`}>{benchData.username}</span>
+                    /{getRepoName(benchData.bench.repoLink || '')}
                   </p>
                 </div>
               </a>
@@ -57,22 +52,22 @@ function CraftBenchCard(benchData: CraftBenchCardProps) {
           )}
         </div>
       </div>
-      <div className="flex flex-col items-end">
-        {benchData.bench.status === "published" ? (
-          <h2 className="bg-[#2c583f] rounded-full px-2 text-[#050e05] flex justify-evenly items-center text-sm">
-            <span className="bg-[#289d65] w-3 h-3 rounded-full border border-[#289d659a] mr-1"></span>
+      <div className='flex flex-col items-end'>
+        {benchData.bench.status === 'published' ? (
+          <h2 className='bg-[#2c583f] rounded-full px-2 text-[#050e05] flex justify-evenly items-center text-sm'>
+            <span className='bg-[#289d65] w-3 h-3 rounded-full border border-[#289d659a] mr-1'></span>
             {benchData.bench.status}
           </h2>
         ) : (
-          <h2 className="bg-[#8a622d] rounded-full px-2 text-[#0c0801] flex justify-evenly items-center text-sm">
-            <span className="bg-[#cf8e1c] w-3 h-3 rounded-full border border-[#cf8e1c9a] mr-1"></span>
+          <h2 className='bg-[#8a622d] rounded-full px-2 text-[#0c0801] flex justify-evenly items-center text-sm'>
+            <span className='bg-[#cf8e1c] w-3 h-3 rounded-full border border-[#cf8e1c9a] mr-1'></span>
             {benchData.bench.status}
           </h2>
         )}
         {/* <button>...</button> */}
       </div>
     </div>
-  );
+  )
 }
 
-export default CraftBenchCard;
+export default CraftBenchCard

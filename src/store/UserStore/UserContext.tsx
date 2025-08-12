@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { BACKEND_URL, FRONTEND_URL } from '../../config'
 import { User } from '../../types/user'
-const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
+import { CLIENT_ID } from '../../config'
 // console.log(CLIENT_ID)
 
 type UserContextType = {
