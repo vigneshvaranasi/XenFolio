@@ -10,17 +10,17 @@ const MySpacePage = () => {
   const { user } = UserContext;
   const [allCraftBenches, setAllCraftBenches] = useState<CraftBench[]>([]);
 
+  async function fetchCraftBenches() {
+    const benches = await getAllCraftBenches();
+    setAllCraftBenches(benches);
+  }
   useEffect(()=>{
-    async function fetchCraftBenches() {
-      const benches = await getAllCraftBenches();
-      setAllCraftBenches(benches);
-    }
     fetchCraftBenches();
   }, [])
 
   return (
-    <div className='flex flex-col justify-center pt-10 md:pt-14'>
-      <h1 className='text-3xl md:text-2xl mb-8'>
+    <div className='flex flex-col justify-center pt-10 md:pt-14 pb-6'>
+      <h1 className='text-2xl mb-8'>
         Hey {UserContext.user ? UserContext.user.username : 'Guest'}!
       </h1>
       <div className='flex flex-col'>
@@ -29,7 +29,7 @@ const MySpacePage = () => {
           {
             allCraftBenches.map((bench:CraftBench, index) => {
               return (
-                <CraftBenchCard key={index} bench={bench} username={user?.username ?? 'Guest'} />
+                <CraftBenchCard key={index} bench={bench} username={user?.username ?? 'Guest'} onRefresh={fetchCraftBenches} />
               )
             })
           }

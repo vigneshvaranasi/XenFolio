@@ -83,7 +83,7 @@ export const UserContextProvider = ({ children }: UserContextProviderProps) => {
     // console.log('clientID: ', CLIENT_ID);
     // const redirectURI = 'https://4cfw3zvk-8888.inc1.devtunnels.ms/';
     window.location.href = 
-    `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo,user,workflow`
+    `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&scope=repo,user,workflow,delete_repo`
     // setIsLoggedIn(true);
   }
 
