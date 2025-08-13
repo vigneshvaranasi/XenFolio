@@ -3,6 +3,7 @@ import { CraftBench } from '../types/mySpace'
 import menuDots from '../assets/menuDots.svg'
 import unpublishImg from '../assets/unpublish.svg'
 import trash from '../assets/trash.svg'
+import link from '../assets/link.svg'
 import { useEffect, useRef, useState } from 'react'
 import {
   deleteCraftBench,
@@ -10,6 +11,10 @@ import {
 } from '../handler/mySpaceHandlers'
 import toast from 'react-hot-toast'
 import { publishFolio } from '../handler/craftBenchHandler'
+import { RotatingLines } from 'react-loader-spinner'
+import { Link } from 'react-router-dom'
+import { getRepoName } from '../utils/craftBenchUtils'
+import { useUserContext } from '../hooks/useUserContext'
 type CraftBenchCardProps = {
   bench: CraftBench
   username: string
@@ -20,6 +25,7 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
   // console.log("CraftBenchCard rendered with:", benchData);
   const [showMenu, setShowMenu] = useState<boolean>(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const { user } = useUserContext()
 
   useEffect(() => {
     function handleClickOutside (e: MouseEvent) {
@@ -55,14 +61,10 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
   }
 
   async function handlePublish (craftId: string) {
-    const data = await publishFolio(craftId)
-    if (data.error) {
-      toast.error(data.message || 'Failed to publish craft bench')
-    } else {
-      toast.success(data.message || 'Craft bench published successfully')
-      benchData.onRefresh()
-    }
+    await publishFolio(craftId)
+    benchData.onRefresh()
   }
+
   return (
     <div
       className={`craftBenchCard relative
@@ -88,7 +90,16 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
             />
             <div className='flex flex-col'>
               {/*CraftBench Name */}
-              <h1 className='text-xl text-[#e6edf3]'>{benchData.bench.name}</h1>
+              <Link
+                to={`/craftbench/${benchData.bench.name}`}
+                state={{
+                  craftId: benchData.bench.craftId
+                }}
+                className='text-xl text-[#e6edf3] hover:underline cursor-pointer'
+              >
+                {benchData.bench.name}
+              </Link>
+
               {/*Folio Selected */}
               <h2 className='text-sm text-[#e6edf3]'>
                 {benchData.bench.folioSelectedName}
@@ -123,7 +134,26 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
               ) : (
                 <div
                   onClick={() => {
-                    handlePublish(benchData.bench.craftId)
+                    toast.promise(
+                      handlePublish(benchData.bench.craftId),
+                      {
+                        loading: 'Publishing your Folio...',
+                        success: 'Your Folio is now published!',
+                        error: 'Failed to publish your Folio. Please try again.'
+                      },
+                      {
+                        style: {},
+                        success: {
+                          duration: 5000,
+                          icon: '🔥'
+                        },
+                        loading: {
+                          icon: (
+                            <RotatingLines width='15' strokeColor='#ffffff' />
+                          )
+                        }
+                      }
+                    )
                     setShowMenu(false)
                   }}
                   className='flex items-center hover:bg-[#181818] rounded-t-lg p-1'
@@ -146,16 +176,33 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
         </div>
 
         <div className={`flex justify-between items-center w-full mt-2`}>
-          {/*Repo Link */}
-          <div
-            className={`rounded-full bg-[#1A1A1A] w-fit drop-shadow-[0_0_10px_#1A1A1A12] font-sans font-semibold border border-[#333538]
-            ${benchData.bench.repoLink ? 'opacity-100' : 'opacity-50'}`}
-          >
-            <a target='_blank' href={`${benchData.bench.repoLink}`}>
-              <div className='flex items-center p-1'>
-                <img src={githubLogo} className='w-4 h-4' alt='' />
+          <div className='flex items-center gap-2'>
+            {/*Repo Link */}
+            <div
+              className={`rounded-full bg-[#1A1A1A] w-fit drop-shadow-[0_0_10px_#1A1A1A12] font-sans font-semibold border border-[#333538]
+              ${benchData.bench.repoLink ? 'opacity-100' : 'opacity-50'}`}
+            >
+              <a target='_blank' href={`${benchData.bench.repoLink}`}>
+                <div className='flex items-center p-1'>
+                  <img src={githubLogo} className='w-4 h-4' alt='' />
+                </div>
+              </a>
+            </div>
+            {benchData.bench.status === 'published' && (
+              <div
+                className={`rounded-full bg-[#1A1A1A] w-fit drop-shadow-[0_0_10px_#1A1A1A12] font-sans font-semibold border border-[#333538]
+              ${benchData.bench.repoLink ? 'opacity-100' : 'opacity-50'} p-1`}
+              >
+                <a
+                  target='_blank'
+                  href={`https://${user?.username}.github.io/${getRepoName(
+                    benchData.bench.repoLink
+                  )}`}
+                >
+                  <img src={link} className='w-4' alt='' />
+                </a>
               </div>
-            </a>
+            )}
           </div>
           {/* Status */}
           <div className='flex flex-col items-end'>
