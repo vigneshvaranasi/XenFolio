@@ -6,11 +6,10 @@ export type CraftBenchContextType = {
   folioConfig: FolioConfig | null;
   setFolioConfig: React.Dispatch<React.SetStateAction<FolioConfig | null>>;
   clearCraftBench: () => void;
-  
 }
 
 
-const defaultFolioConfig: FolioConfig = {
+export const defaultFolioConfig: FolioConfig = {
   personalInformation: {
     name: '',
     email: '',
@@ -22,9 +21,9 @@ const defaultFolioConfig: FolioConfig = {
     resumeLink: ''
   },
   skills: {
-    languages: undefined,
-    tools: undefined,
-    frameworks: undefined
+    languages: [],
+    tools: [],
+    frameworks: []
   },
   projects: [],
   workExperience: []
@@ -54,7 +53,7 @@ export const CraftBenchProvider: React.FC<{ children: React.ReactNode }> = ({
 
 
   const clearCraftBench = () => {
-    setFolioConfig(null)
+    setFolioConfig(defaultFolioConfig)
     setMeta(null)
   }
   return (

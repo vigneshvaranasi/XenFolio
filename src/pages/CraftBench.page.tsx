@@ -17,6 +17,7 @@ import Modal from '../components/ui/Modal'
 import toast from 'react-hot-toast'
 import { unpublishCraftBench } from '../handler/mySpaceHandlers'
 import { RotatingLines } from 'react-loader-spinner'
+import { defaultFolioConfig } from '../store/CraftBenchStore/CraftBenchContext'
 
 const CraftBenchPage = () => {
   const { craftBenchName } = useParams<{ craftBenchName: string }>()
@@ -68,7 +69,7 @@ const CraftBenchPage = () => {
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload)
-      setFolioConfig(null)
+      setFolioConfig(defaultFolioConfig)
       setMeta(null)
     }
   }, [])

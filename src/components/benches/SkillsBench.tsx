@@ -1,4 +1,5 @@
 import { useCraftBenchContext } from '../../hooks/useCraftBenchContext'
+import SkillSelect from '../SkillSelect'
 import InputBox from '../ui/InputBox'
 
 function SkillsBench () {
@@ -73,10 +74,8 @@ function SkillsBench () {
             }
           />
         </div>
-        <div className='hidden md:flex justify-center items-center'>
-          <p>
-            To Do Select Component
-          </p>
+        <div className='hidden md:block'>
+          <SkillSelect />
         </div>
       </div>
     </div>

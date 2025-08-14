@@ -17,9 +17,9 @@ function PersonalInformationBench () {
         resumeLink: 'https://example.com/resume'
       },
       skills: {
-        languages: ['cpp', 'python', 'java', 'javascript', 'typescript'],
-        tools: ['turborepo', 'figma'],
-        frameworks: ['reactjs', 'express']
+        languages: ['C++', 'Python', 'Java', 'JavaScript', 'TypeScript'],
+        tools: ['Turborepo', 'Figma'],
+        frameworks: ['React', 'Express']
       },
       projects: [
         {
