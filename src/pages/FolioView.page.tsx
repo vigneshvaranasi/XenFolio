@@ -198,6 +198,11 @@ const FolioViewPage = () => {
                 text="Preview"
                 variant="secondary"
                 className="text-white"
+                onClick={() => {
+                  if (folioName) {
+                    window.open(`/folios/${folioName}.html`, "_blank", "noopener,noreferrer");
+                  }
+                }}
               />
             </div>
           </div>
@@ -207,7 +212,7 @@ const FolioViewPage = () => {
         </div>
         <iframe
           className="w-full bg-white h-[60vh] md:h-[65vh] rounded-t-lg"
-          src={currFolio?.previewLink}
+          src={`/folios/${folioName}.html`}
         ></iframe>
       </div>
       <Modal isOpen={getThisModal} onClose={() => setGetThisModal(false)}>

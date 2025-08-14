@@ -4,8 +4,8 @@ import { defaultFolioConfig } from '../store/CraftBenchStore/CraftBenchContext'
 
 const skills = {
   languages: ['JavaScript', 'TypeScript', 'Python', 'C++', 'Java', 'Rust'],
-  frameworks: ['React', 'Angular', 'Vue', 'Express', 'Spring Boot', 'Next.js', 'Flutter', 'Django','Flask', 'React Native'],
-  tools: ['Git & GitHub', 'Docker', 'Figma', 'Postman','Turborepo'],
+  frameworks: ['React', 'Express', 'Spring Boot', 'Next.js', 'Flutter', 'Django','Flask', 'React Native'],
+  tools: ['Git & GitHub', 'Docker', 'Figma', 'Postman','Turborepo','MongoDB','SQL','PostgreSQL', 'Redis', 'AWS', 'Azure', 'Google Cloud'],
 }
 
 function SkillSelect () {
