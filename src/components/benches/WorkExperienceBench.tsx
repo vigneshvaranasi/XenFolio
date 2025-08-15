@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import NumberCounter from '../ui/NumberCounter'
 import InputBox from '../ui/InputBox';
 import { useCraftBenchContext } from '../../hooks/useCraftBenchContext';
@@ -6,6 +7,19 @@ import { WorkExperience } from '../../types/folioConfig';
 function WorkExperienceBench() {
   const { folioConfig, setFolioConfig } = useCraftBenchContext();
   const experiencesCount = folioConfig?.workExperience?.length || 0;
+  const [techStackTexts, setTechStackTexts] = useState<string[]>([])
+
+  // Sync local text with config changes
+  useEffect(() => {
+  const texts = (folioConfig?.workExperience ?? []).map((w) => (w.techStack ?? []).filter(Boolean).join(', '))
+    setTechStackTexts(texts)
+  }, [folioConfig?.workExperience])
+
+  const parseList = (text: string) =>
+    text
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
   
   const addExperience = () => {
     setFolioConfig(prevConfig => {
@@ -13,7 +27,7 @@ function WorkExperienceBench() {
       return {
         ...prevConfig,
         workExperience: [
-          ...prevConfig.workExperience,
+          ...(prevConfig.workExperience || []),
           {
             role: "",
             company: "",
@@ -23,6 +37,7 @@ function WorkExperienceBench() {
         ]
       };
     });
+    setTechStackTexts(prev => [...prev, ''])
   };
 
   const removeExperience = () => {
@@ -34,6 +49,7 @@ function WorkExperienceBench() {
           workExperience: prevConfig.workExperience.slice(0, -1)
         };
       });
+      setTechStackTexts(prev => prev.slice(0, -1))
     }
   };
 
@@ -51,6 +67,11 @@ function WorkExperienceBench() {
       };
     });
   };
+
+  const commitTechStack = (index: number, text: string) => {
+    const list = parseList(text)
+    updateExperience(index, 'techStack' as keyof WorkExperience[0], list)
+  }
 
   return (
     <div className="flex flex-col gap-4 mt-4">
@@ -95,8 +116,23 @@ function WorkExperienceBench() {
               placeholder="Enter tech stack (comma separated)"
               type="text"
               className="w-full"
-              value={experience.techStack.join(', ')}
-              onChange={(e) => updateExperience(index, 'techStack', e.target.value.split(',').map(s => s.trim()))}
+              value={techStackTexts[index] ?? experience.techStack.filter(Boolean).join(', ')}
+              onChange={(e) => {
+                const value = e.target.value
+                setTechStackTexts(prev => {
+                  const next = [...prev]
+                  next[index] = value
+                  return next
+                })
+              }}
+              onBlur={(e) => commitTechStack(index, e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  commitTechStack(index, techStackTexts[index] ?? '')
+                  ;(e.target as HTMLInputElement).blur()
+                }
+              }}
             />
             <InputBox
               label="Description"

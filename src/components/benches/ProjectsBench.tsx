@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useCraftBenchContext } from "../../hooks/useCraftBenchContext";
 import NumberCounter from "../ui/NumberCounter";
 import InputBox from "../ui/InputBox";
@@ -7,13 +8,30 @@ function ProjectsBench() {
   const { folioConfig, setFolioConfig } = useCraftBenchContext();
   const projectsCount = folioConfig?.projects?.length || 0;
 
+  // Local text state
+  const [techStackTexts, setTechStackTexts] = useState<string[]>([]);
+
+  // Sync local text
+  useEffect(() => {
+    const texts = (folioConfig?.projects ?? []).map((p) =>
+      (p.techStack ?? []).filter(Boolean).join(", ")
+    );
+    setTechStackTexts(texts);
+  }, [folioConfig?.projects]);
+
+  const parseList = (text: string) =>
+    text
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
   const addProject = () => {
     setFolioConfig((prevConfig) => {
       if (!prevConfig) return prevConfig;
       return {
         ...prevConfig,
         projects: [
-          ...prevConfig.projects,
+          ...(prevConfig.projects || []),
           {
             title: "",
             description: "",
@@ -25,6 +43,7 @@ function ProjectsBench() {
         ],
       };
     });
+    setTechStackTexts((prev) => [...prev, ""]);
   };
 
   const removeProject = () => {
@@ -36,6 +55,7 @@ function ProjectsBench() {
           projects: prevConfig.projects.slice(0, -1),
         };
       });
+      setTechStackTexts((prev) => prev.slice(0, -1));
     }
   };
 
@@ -58,6 +78,10 @@ function ProjectsBench() {
     });
   };
 
+  const commitTechStack = (index: number, text: string) => {
+    const list = parseList(text);
+    updateProject(index, "techStack", list);
+  };
 
   return (
     <div className="flex flex-col gap-4 mt-4">
@@ -103,14 +127,23 @@ function ProjectsBench() {
               placeholder="Enter tech stack (comma separated)"
               type="text"
               className="w-full"
-              value={project.techStack.join(", ")}
-              onChange={(e) =>
-                updateProject(
-                  index,
-                  "techStack",
-                  e.target.value.split(",").map((s) => s.trim())
-                )
-              }
+              value={techStackTexts[index] ?? project.techStack.filter(Boolean).join(", ")}
+              onChange={(e) => {
+                const value = e.target.value;
+                setTechStackTexts((prev) => {
+                  const next = [...prev];
+                  next[index] = value;
+                  return next;
+                });
+              }}
+              onBlur={(e) => commitTechStack(index, e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  commitTechStack(index, techStackTexts[index] ?? "");
+                  (e.target as HTMLInputElement).blur();
+                }
+              }}
             />
             <InputBox
               label="Image URL"

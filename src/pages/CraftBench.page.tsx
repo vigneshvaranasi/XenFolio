@@ -238,7 +238,7 @@ const CraftBenchPage = () => {
       </div> */}
         <div>{tabs[currTab].content}</div>
 
-        <div className='mt-6 flex justify-center gap-4 items-center '>
+        <div className='my-6 flex justify-center gap-4 items-center '>
           {currTab > 0 && (
             <Button
               text='Prev'

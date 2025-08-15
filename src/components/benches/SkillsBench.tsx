@@ -15,9 +15,9 @@ function SkillsBench () {
   // Sync local text when folioConfig changes externally
   const skills = folioConfig?.skills
   useEffect(() => {
-    setLanguagesText((skills?.languages ?? []).join(', '))
-    setFrameworksText((skills?.frameworks ?? []).join(', '))
-    setToolsText((skills?.tools ?? []).join(', '))
+  setLanguagesText((skills?.languages ?? []).filter(Boolean).join(', '))
+  setFrameworksText((skills?.frameworks ?? []).filter(Boolean).join(', '))
+  setToolsText((skills?.tools ?? []).filter(Boolean).join(', '))
   }, [skills?.languages, skills?.frameworks, skills?.tools])
 
   const parseList = (text: string) =>
