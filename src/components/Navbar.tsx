@@ -2,13 +2,22 @@
 import { Link } from 'react-router-dom'
 import { useUserContext } from '../hooks/useUserContext'
 import ProfileButton from './ProfileButton'
-import {motion} from 'framer-motion'
+import { motion } from 'framer-motion'
 
-function Navbar() {
+function NavbarSkeleton () {
+  return (
+    <div className='flex justify-center gap-2'>
+      <div className='notosans bg-[#2b2a33] rounded p-3 w-16 animate-pulse'>
+      </div>
+      <div className='notosans bg-[#2b2a33] rounded-full p-4 animate-pulse'>
+      </div>
+    </div>
+  )
+}
 
-  const UserContext = useUserContext();
-  const {isLoggedIn, user} = UserContext
-
+function Navbar () {
+  const UserContext = useUserContext()
+  const { isLoggedIn, user, loading } = UserContext
 
   return (
     <motion.div
@@ -24,8 +33,11 @@ function Navbar() {
       style={{ zIndex: 1000 }}
     >
       <Link to='/'>
-        <div className={`opacity-100 text-white text-2xl hover:text-neutral-200`}>XenFolio</div>
-        
+        <div
+          className={`opacity-100 text-white text-2xl hover:text-neutral-200`}
+        >
+          XenFolio
+        </div>
       </Link>
 
       <div className='flex flex-row justify-between items-center gap-0'>
@@ -33,25 +45,24 @@ function Navbar() {
           Folios
         </Link>
 
-        {
-          isLoggedIn && user ?
-            <>
-              <Link to='myspace' className='text-lg mr-4'>
-                MySpace
-              </Link>
+        {loading ? (
+          <NavbarSkeleton />
+        ) : isLoggedIn && user ? (
+          <>
+            <Link to='myspace' className='text-lg mr-4'>
+              MySpace
+            </Link>
 
-              <ProfileButton
-                username={user.username}
-                avatar_url={user.avatar_url}
-              />
-            </>
-            :
-            <button 
-              onClick={UserContext.handleLogin} className='text-lg'
-            >
-              Sign In
-            </button>
-        }
+            <ProfileButton
+              username={user.username}
+              avatar_url={user.avatar_url}
+            />
+          </>
+        ) : (
+          <button onClick={UserContext.handleLogin} className='text-lg'>
+            Sign In
+          </button>
+        )}
 
         {/* This is SignIn Button with the GitHub Icon  refs: Line1 */}
         {/* <div className='flex items-center gap-2'>
@@ -61,7 +72,6 @@ function Navbar() {
         {/* <div className='flex items-center gap-2'> */}
         {/* </div> */}
       </div>
-
     </motion.div>
   )
 }

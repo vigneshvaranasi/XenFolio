@@ -77,7 +77,7 @@ function WorkExperienceBench() {
     <div className="flex flex-col gap-4 mt-4">
       <div className={`flex items-center justify-between gap-2`}>
         <div className={`flex items-center justify-content-start gap-2`}>
-          <h2 className="text-4xl">Work Experience</h2>
+          <h2 className='text-xl md:text-4xl'>Work Experience</h2>
           <div className="flex items-center gap-2">
             <NumberCounter
               count={experiencesCount}
@@ -145,6 +145,20 @@ function WorkExperienceBench() {
           </div>
         </div>
       ))}
+      {
+        experiencesCount === 0 && (
+        <div
+          className='flex flex-col items-center justify-center 
+            border border-dashed border-white/20 
+            bg-white/5 text-white/60 
+            rounded-xl p-3 md:p-10 text-center 
+            transition hover:bg-white/10 hover:text-white cursor-pointer'
+            onClick={addExperience}
+        >
+            <div className="text-lg">💼 No experiences yet, Click to add</div>
+        </div>
+        )
+      }
     </div>
   )
 }

@@ -80,7 +80,7 @@ function PersonalInformationBench () {
   return (
     <div className='flex flex-col gap-4 mt-4'>
       <div className='flex gap-4 justify-between items-center flex-wrap'>
-        <h2 className='text-4xl'>Personal Information</h2>
+        <h2 className='text-xl md:text-4xl'>Personal Information</h2>
         <Button
           text='Load Sample Data'
           variant='primary'

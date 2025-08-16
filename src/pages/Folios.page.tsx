@@ -17,7 +17,7 @@ const FoliosPage = () => {
   
   return (
     <div className="flex flex-col justify-center pt-4 md:pt-6">
-      <h1 className='text-3xl md:text-4xl mb-8'>Folios</h1>
+      <h1 className='text-xl md:text-4xl mb-8'>Folios</h1>
       <div className={
         `flex flex-col md:flex-row w-full flex-wrap
         gap-4 

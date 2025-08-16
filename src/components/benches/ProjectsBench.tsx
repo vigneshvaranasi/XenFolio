@@ -1,179 +1,194 @@
-import { useEffect, useState } from "react";
-import { useCraftBenchContext } from "../../hooks/useCraftBenchContext";
-import NumberCounter from "../ui/NumberCounter";
-import InputBox from "../ui/InputBox";
-import { Project } from "../../types/folioConfig";
+import { useEffect, useState } from 'react'
+import { useCraftBenchContext } from '../../hooks/useCraftBenchContext'
+import NumberCounter from '../ui/NumberCounter'
+import InputBox from '../ui/InputBox'
+import { Project } from '../../types/folioConfig'
 
-function ProjectsBench() {
-  const { folioConfig, setFolioConfig } = useCraftBenchContext();
-  const projectsCount = folioConfig?.projects?.length || 0;
+function ProjectsBench () {
+  const { folioConfig, setFolioConfig } = useCraftBenchContext()
+  const projectsCount = folioConfig?.projects?.length || 0
 
   // Local text state
-  const [techStackTexts, setTechStackTexts] = useState<string[]>([]);
+  const [techStackTexts, setTechStackTexts] = useState<string[]>([])
 
   // Sync local text
   useEffect(() => {
-    const texts = (folioConfig?.projects ?? []).map((p) =>
-      (p.techStack ?? []).filter(Boolean).join(", ")
-    );
-    setTechStackTexts(texts);
-  }, [folioConfig?.projects]);
+    const texts = (folioConfig?.projects ?? []).map(p =>
+      (p.techStack ?? []).filter(Boolean).join(', ')
+    )
+    setTechStackTexts(texts)
+  }, [folioConfig?.projects])
 
   const parseList = (text: string) =>
     text
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean);
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
 
   const addProject = () => {
-    setFolioConfig((prevConfig) => {
-      if (!prevConfig) return prevConfig;
+    setFolioConfig(prevConfig => {
+      if (!prevConfig) return prevConfig
       return {
         ...prevConfig,
         projects: [
           ...(prevConfig.projects || []),
           {
-            title: "",
-            description: "",
+            title: '',
+            description: '',
             techStack: [],
-            image: "",
-            repoLink: "",
-            liveLink: "",
-          },
-        ],
-      };
-    });
-    setTechStackTexts((prev) => [...prev, ""]);
-  };
+            image: '',
+            repoLink: '',
+            liveLink: ''
+          }
+        ]
+      }
+    })
+    setTechStackTexts(prev => [...prev, ''])
+  }
 
   const removeProject = () => {
     if (projectsCount > 0) {
-      setFolioConfig((prevConfig) => {
-        if (!prevConfig || prevConfig.projects.length === 0) return prevConfig;
+      setFolioConfig(prevConfig => {
+        if (!prevConfig || prevConfig.projects.length === 0) return prevConfig
         return {
           ...prevConfig,
-          projects: prevConfig.projects.slice(0, -1),
-        };
-      });
-      setTechStackTexts((prev) => prev.slice(0, -1));
+          projects: prevConfig.projects.slice(0, -1)
+        }
+      })
+      setTechStackTexts(prev => prev.slice(0, -1))
     }
-  };
+  }
 
   const updateProject = (
     index: number,
     field: keyof Project,
     value: string | string[]
   ) => {
-    setFolioConfig((prevConfig) => {
-      if (!prevConfig) return prevConfig;
-      const updatedProjects = [...prevConfig.projects];
+    setFolioConfig(prevConfig => {
+      if (!prevConfig) return prevConfig
+      const updatedProjects = [...prevConfig.projects]
       updatedProjects[index] = {
         ...updatedProjects[index],
-        [field]: value,
-      };
+        [field]: value
+      }
       return {
         ...prevConfig,
-        projects: updatedProjects,
-      };
-    });
-  };
+        projects: updatedProjects
+      }
+    })
+  }
 
   const commitTechStack = (index: number, text: string) => {
-    const list = parseList(text);
-    updateProject(index, "techStack", list);
-  };
+    const list = parseList(text)
+    updateProject(index, 'techStack', list)
+  }
 
   return (
-    <div className="flex flex-col gap-4 mt-4">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center justify-content-start gap-2">
-          <h2 className="text-4xl">Projects</h2>
-          <div className="flex items-center gap-2">
+    <div className='flex flex-col gap-4 mt-4'>
+      <div className='flex items-center justify-between gap-2'>
+        <div className='flex items-center justify-content-start gap-2'>
+          <h2 className='text-xl md:text-4xl'>Projects</h2>
+          <div className='flex items-center gap-2'>
             <NumberCounter
               count={projectsCount}
               onIncrement={addProject}
               onDecrement={removeProject}
-              variant="primary"
+              variant='primary'
             />
           </div>
         </div>
-        <div className="border border-gray-300 opacity-0">Progress</div>
+        <div className='border border-gray-300 opacity-0'>Progress</div>
       </div>
 
       {folioConfig?.projects?.map((project, index) => (
-        <div key={index} className="">
-          <h3 className="text-2xl">Project {index + 1}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div key={index} className=''>
+          <h3 className='text-2xl'>Project {index + 1}</h3>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <InputBox
-              label="Project Name"
-              placeholder="Enter project name"
-              type="text"
-              className="w-full"
+              label='Project Name'
+              placeholder='Enter project name'
+              type='text'
+              className='w-full'
               value={project.title}
-              onChange={(e) => updateProject(index, "title", e.target.value)}
+              onChange={e => updateProject(index, 'title', e.target.value)}
             />
             <InputBox
-              label="Description"
-              placeholder="Enter project description"
-              type="text"
-              className="w-full"
+              label='Description'
+              placeholder='Enter project description'
+              type='text'
+              className='w-full'
               value={project.description}
-              onChange={(e) =>
-                updateProject(index, "description", e.target.value)
+              onChange={e =>
+                updateProject(index, 'description', e.target.value)
               }
             />
             <InputBox
-              label="Tech Stack"
-              placeholder="Enter tech stack (comma separated)"
-              type="text"
-              className="w-full"
-              value={techStackTexts[index] ?? project.techStack.filter(Boolean).join(", ")}
-              onChange={(e) => {
-                const value = e.target.value;
-                setTechStackTexts((prev) => {
-                  const next = [...prev];
-                  next[index] = value;
-                  return next;
-                });
+              label='Tech Stack'
+              placeholder='Enter tech stack (comma separated)'
+              type='text'
+              className='w-full'
+              value={
+                techStackTexts[index] ??
+                project.techStack.filter(Boolean).join(', ')
+              }
+              onChange={e => {
+                const value = e.target.value
+                setTechStackTexts(prev => {
+                  const next = [...prev]
+                  next[index] = value
+                  return next
+                })
               }}
-              onBlur={(e) => commitTechStack(index, e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  commitTechStack(index, techStackTexts[index] ?? "");
-                  (e.target as HTMLInputElement).blur();
+              onBlur={e => commitTechStack(index, e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  commitTechStack(index, techStackTexts[index] ?? '')
+                  ;(e.target as HTMLInputElement).blur()
                 }
               }}
             />
             <InputBox
-              label="Image URL"
-              placeholder="Enter image URL"
-              type="text"
-              className="w-full"
+              label='Image URL'
+              placeholder='Enter image URL'
+              type='text'
+              className='w-full'
               value={project.image}
-              onChange={(e) => updateProject(index, "image", e.target.value)}
+              onChange={e => updateProject(index, 'image', e.target.value)}
             />
             <InputBox
-              label="Repository Link"
-              placeholder="Enter repository link"
-              type="url"
-              className="w-full"
+              label='Repository Link'
+              placeholder='Enter repository link'
+              type='url'
+              className='w-full'
               value={project.repoLink}
-              onChange={(e) => updateProject(index, "repoLink", e.target.value)}
+              onChange={e => updateProject(index, 'repoLink', e.target.value)}
             />
             <InputBox
-              label="Live Link"
-              placeholder="Enter live project link"
-              type="url"
-              className="w-full"
+              label='Live Link'
+              placeholder='Enter live project link'
+              type='url'
+              className='w-full'
               value={project.liveLink}
-              onChange={(e) => updateProject(index, "liveLink", e.target.value)}
+              onChange={e => updateProject(index, 'liveLink', e.target.value)}
             />
           </div>
         </div>
       ))}
+      {projectsCount === 0 && (
+        <div
+          className='flex flex-col items-center justify-center 
+            border border-dashed border-white/20 
+            bg-white/5 text-white/60 
+            rounded-xl p-3 md:p-10 text-center 
+            transition hover:bg-white/10 hover:text-white cursor-pointer'
+            onClick={addProject}
+        >
+            <div className="text-lg">🗂️ No projects yet, Click to add</div>
+        </div>
+      )}
     </div>
-  );
+  )
 }
 
-export default ProjectsBench;
+export default ProjectsBench

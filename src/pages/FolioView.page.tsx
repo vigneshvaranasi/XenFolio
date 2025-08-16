@@ -12,6 +12,7 @@ import { getAvatarByUsername, getFolioByName } from "../handler/folioHandlers";
 import { Folio } from "../types/folioConfig";
 import toast from "react-hot-toast";
 import { createCraftBench, downloadCode, publishFolio } from "../handler/craftBenchHandler";
+import { BACKEND_URL } from "../config";
 
 const FolioViewPage = () => {
   const { folioName } = useParams<{ folioName: string }>();
@@ -53,20 +54,52 @@ const FolioViewPage = () => {
 
   const [getThisModal, setGetThisModal] = useState(false);
 
-  const { user } = useUserContext();
+  const { user,accessToken } = useUserContext();
   const { setMeta, meta } = useCraftBenchContext();
   const navigate = useNavigate();
 
-  function handleCreateCraftBench() {
+
+  async function isCraftBenchNameAvailable(name:string){
+    if (!name || name.trim() === "") {
+      toast.error("Craft Bench name cannot be empty");
+      return false;
+    }
+    try{
+      let header= new Headers();
+      header.append("Content-Type", "application/json");
+      header.append("token", `${accessToken}`);
+      
+      const isAvailable= await fetch(`${BACKEND_URL}/craftBench/check/${name}`,{
+        headers:header
+      });
+      if (!isAvailable.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await isAvailable.json();
+      if (!data.exists) {
+        return true;
+      } else {
+        toast.error("Craft Bench name is already taken");
+        return false;
+      }
+    }catch(err:any){
+      toast.error("Error checking Craft Bench name availability");
+      console.error("Error checking Craft Bench name availability:", err);
+      return false;
+    }
+  }
+
+  async function handleCreateCraftBench() {
     if (craftBenchNameRef.current) {
-      if (craftBenchNameRef.current.value.trim() === "") {
-        toast.error("Please give a nice name to your Craft Bench");
+      const craftBenchName = craftBenchNameRef.current.value.trim();
+      const isAvailable = await isCraftBenchNameAvailable(craftBenchName);
+      if (!isAvailable) {
         return;
       }
       setMeta({
         folioName: currFolio?.folioName || folioName || "",
         folioAvatar: currFolio?.folioAvatar || "",
-        craftName: craftBenchNameRef.current.value,
+        craftName: craftBenchName,
         status: "inProgress",
         folioId: currFolio?._id || "",
       });
@@ -79,15 +112,16 @@ const FolioViewPage = () => {
 
   async function handleUseRecentConfig() {
     if (craftBenchNameRef.current) {
-      if (craftBenchNameRef.current.value.trim() === "") {
-        toast.error("Please give a nice name to your Craft Bench");
+      const craftBenchName = craftBenchNameRef.current.value.trim();
+      const isAvailable = await isCraftBenchNameAvailable(craftBenchName);
+      if (!isAvailable) {
         return;
       }
 
       let newMeta = {
         folioName: currFolio?.folioName || folioName || "",
         folioAvatar: currFolio?.folioAvatar || "",
-        craftName: craftBenchNameRef.current.value,
+        craftName: craftBenchName,
         status: "inProgress" as "inProgress",
         folioId: currFolio?._id || "",
       };
@@ -174,7 +208,7 @@ const FolioViewPage = () => {
       <div className="pt-4 md:pt-6">
         <div className="flex flex-row justify-between w-full mb-2">
           <div className="flex flex-col">
-            <p className="text-3xl md:text-2xl mb-2">
+            <p className="text-xl md:text-2xl mb-2">
               <Link className="font-light" to="/folios">
                 Folios{" "}
               </Link>

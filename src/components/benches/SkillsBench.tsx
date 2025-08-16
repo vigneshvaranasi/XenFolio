@@ -55,7 +55,7 @@ function SkillsBench () {
 
   return (
     <div className='flex flex-col gap-4 mt-4'>
-      <h2 className='text-4xl'>Skills</h2>
+      <h2 className='text-xl md:text-4xl'>Skills</h2>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         <div className='flex flex-col gap-4'>
           <InputBox

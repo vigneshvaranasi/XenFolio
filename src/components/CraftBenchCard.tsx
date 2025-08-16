@@ -161,6 +161,14 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
                   <p className='hover:bg-[#181818] cursor-pointer'>Publish</p>
                 </div>
               )}
+                <Link
+                className='hover:bg-[#181818] p-1'
+                  to={`/preview/${benchData.bench.craftId}`}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  Preview
+                </Link>
               <div
                 onClick={() => {
                   handleDelete(benchData.bench.craftId)

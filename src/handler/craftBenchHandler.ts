@@ -126,10 +126,14 @@ export const downloadCode = async (craftId:string)=>{
     });
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      return {
+        error: true,
+        message: "Error downloading code",
+      };
     }
 
     const data = await response.text();
+    console.log('data: ', data);
     return data;
   } catch (err: any) {
     console.error("Error downloading code:", err);

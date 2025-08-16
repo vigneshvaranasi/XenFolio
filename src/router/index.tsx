@@ -8,6 +8,7 @@ import MySpacePage from "../pages/MySpace.page";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Callback from "../components/Callback";
 import FolioLayout from "../components/FolioLayout";
+import PreviewPage from "../pages/Preview.page";
 
 
 
@@ -33,7 +34,6 @@ const normalRoutes: RouteObject = {
                 }
             ]
         },
-        
         // Protected Routes
         {
             path: "myspace",
@@ -43,7 +43,7 @@ const normalRoutes: RouteObject = {
             path: "craftbench/:craftBenchName",
             element: <ProtectedRoute element={<CraftBenchPage />} />
         }
-    ]
+    ],
 };
 
 const callbackRoute: RouteObject = {
@@ -51,6 +51,11 @@ const callbackRoute: RouteObject = {
     element: <Callback />
 }
 
-const routes: RouteObject[] = [normalRoutes, callbackRoute];
+const previewRoute: RouteObject = {
+    path: "preview/:craftId",
+    element: <PreviewPage />
+}
+
+const routes: RouteObject[] = [normalRoutes, previewRoute, callbackRoute];
 
 export default routes;
