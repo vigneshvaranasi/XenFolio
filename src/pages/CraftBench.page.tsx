@@ -262,7 +262,7 @@ const CraftBenchPage = () => {
                   toast.promise(
                     handleUpdate(),
                     {
-                      loading: 'Updating Craft Bench...',
+                      loading: 'Updating Craft Bench. This might take a few seconds.',
                       success: 'CraftBench Updated Successfully',
                       error: 'CraftBench could not be updated'
                     },

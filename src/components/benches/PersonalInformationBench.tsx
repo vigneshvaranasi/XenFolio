@@ -1,9 +1,29 @@
+import { useRef } from 'react'
 import { useCraftBenchContext } from '../../hooks/useCraftBenchContext'
 import Button from '../ui/Button'
 import InputBox from '../ui/InputBox'
+import { uploadResume } from '../../handler/craftBenchHandler'
+import toast from 'react-hot-toast'
+import { RotatingLines } from 'react-loader-spinner'
 
 function PersonalInformationBench () {
   const { folioConfig, setFolioConfig } = useCraftBenchContext()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
+    }
+  }
+
+  const handleFileChange = async (e: any) => {
+    const file = e.target.files[0]
+    if (file) {
+      const result = await uploadResume(file)
+      setFolioConfig(result)
+    }
+  }
+
   function loadDefaultData () {
     setFolioConfig({
       personalInformation: {
@@ -20,7 +40,7 @@ function PersonalInformationBench () {
       },
       skills: {
         languages: ['C++', 'Python', 'Java', 'JavaScript', 'TypeScript'],
-        tools: ['Turborepo', 'Figma', 'Postman', 'Git', 'Azure','Docker'],
+        tools: ['Turborepo', 'Figma', 'Postman', 'Git', 'Azure', 'Docker'],
         frameworks: ['React', 'Express', 'Next.js', 'Node.js', 'Tailwind CSS']
       },
       projects: [
@@ -81,11 +101,45 @@ function PersonalInformationBench () {
     <div className='flex flex-col gap-4 mt-4'>
       <div className='flex gap-4 justify-between items-center flex-wrap'>
         <h2 className='text-xl md:text-4xl'>Personal Information</h2>
-        <Button
-          text='Load Sample Data'
-          variant='primary'
-          onClick={loadDefaultData}
-        />
+        <div className='flex gap-2'>
+          <input
+            type='file'
+            name='resume'
+            id='resume'
+            ref={fileInputRef}
+            onChange={(e: any) => {
+              toast.promise(
+                handleFileChange(e),
+                {
+                  loading: 'Reading your resume… This might take a few seconds.',
+                  success: 'Filled using your resume! You can now review and edit the details.',
+                  error: 'Oops! Something went wrong while processing your resume. Please try again.'
+                },
+                {
+                  success: {
+                    duration: 5000,
+                    icon: '📄'
+                  },
+                  loading: {
+                    icon: <RotatingLines width='15' strokeColor='#ffffff' />
+                  }
+                }
+              )
+            }}
+            className='hidden'
+            accept='.pdf'
+          />
+          <Button
+            text='Fill from Resume'
+            variant='warning'
+            onClick={handleClick}
+          />
+          <Button
+            text='Load Sample Data'
+            variant='primary'
+            onClick={loadDefaultData}
+          />
+        </div>
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
         <InputBox

@@ -137,7 +137,7 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
                     toast.promise(
                       handlePublish(benchData.bench.craftId),
                       {
-                        loading: 'Publishing your Folio...',
+                        loading: 'Publishing your Folio. This might take a few seconds.',
                         success: 'Your Folio is now published!',
                         error: 'Failed to publish your Folio. Please try again.'
                       },
