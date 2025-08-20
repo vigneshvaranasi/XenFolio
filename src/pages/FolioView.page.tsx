@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { getAvatarByUsername, getFolioByName } from "../handler/folioHandlers";
 import { Folio } from "../types/folioConfig";
 import toast from "react-hot-toast";
-import { createCraftBench, downloadCode, publishFolio } from "../handler/craftBenchHandler";
+import { createCraftBench } from "../handler/craftBenchHandler";
 import { BACKEND_URL } from "../config";
 
 const FolioViewPage = () => {
@@ -24,11 +24,6 @@ const FolioViewPage = () => {
     }[]
   >([]);
   const craftBenchNameRef = useRef<HTMLInputElement>(null);
-  const [finishCraftBenchModal, setFinishCraftBenchModal] =
-    useState<boolean>(false);
-
-  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
-  const [publishLoading, setPublishLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!folioName) {
@@ -55,13 +50,17 @@ const FolioViewPage = () => {
   const [getThisModal, setGetThisModal] = useState(false);
 
   const { user,accessToken } = useUserContext();
-  const { setMeta, meta } = useCraftBenchContext();
+  const { setMeta } = useCraftBenchContext();
   const navigate = useNavigate();
 
 
   async function isCraftBenchNameAvailable(name:string){
     if (!name || name.trim() === "") {
       toast.error("Craft Bench name cannot be empty");
+      return false;
+    }
+    if(name.split(" ").length > 1){
+      toast.error("Craft Bench name cannot contain spaces");
       return false;
     }
     try{
@@ -136,7 +135,7 @@ const FolioViewPage = () => {
             craftId: finishCraftBench.craftId,
           }));
           toast.success("Hurray! Your Craft Bench has been created.");
-          setFinishCraftBenchModal(true);
+          navigate(`/myspace`)
         }
       } catch (err: any) {
         toast.error("Error creating Craft Bench");
@@ -146,62 +145,6 @@ const FolioViewPage = () => {
     }
   }
 
-  const handleDownloadCode = async () => {
-    setDownloadLoading(true);
-    try {
-      if (meta?.craftId) {
-        const folioCode = await downloadCode(meta.craftId);
-        if (typeof folioCode !== "string") {
-          console.error(
-            "folioCode is not a string, received:",
-            typeof folioCode
-          );
-          return;
-        }
-        const blob = new Blob([folioCode], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${meta.craftName}.html`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        toast.success("Code downloaded successfully");
-      } else {
-        throw new Error("craftId is undefined, cannot download code.");
-      }
-    } catch (err: any) {
-      toast.error("Oh-oh! The Craft Bench could not be downloaded.");
-      console.error("Error downloading code:", err);
-    } finally {
-      setDownloadLoading(false);
-    }
-  };
-
-  const handlePublishToGitHub = async () => {
-    setPublishLoading(true);
-    try {
-      if (meta?.craftId === undefined) {
-        console.error("craftId is undefined, cannot publish to GitHub.");
-        throw new Error("No Craft Id, Restart CraftBench");
-      }
-      const publishStatus = await publishFolio(meta?.craftId);
-      if (publishStatus.error) {
-        console.error("Error publishing to GitHub:", publishStatus.message);
-        throw new Error(publishStatus.message);
-      } else {
-        toast.success("Your Folio is live at " + publishStatus.folioUrl);
-        console.log(publishStatus);
-      }
-    } catch (err: any) {
-      toast.error("Oh-oh! There was an error publishing to GitHub.");
-      console.error("Error publishing to GitHub:", err);
-    } finally {
-      setPublishLoading(false);
-      setFinishCraftBenchModal(false);
-    }
-  };
 
   return (
     <>
@@ -245,7 +188,7 @@ const FolioViewPage = () => {
           <Avatars creators={creators} variant="elastic" />
         </div>
         <iframe
-          className="w-full bg-white h-[60vh] md:h-[65vh] rounded-t-lg"
+          className="w-full bg-white h-[60vh] md:h-[65vh] rounded-t-lg overflow-hidden"
           src={`/folios/${folioName}.html`}
         ></iframe>
       </div>
@@ -274,32 +217,6 @@ const FolioViewPage = () => {
           )}
         </div>
       </Modal>
-      {finishCraftBenchModal && (
-        <Modal
-          isOpen={finishCraftBenchModal}
-          onClose={() => setFinishCraftBenchModal(false)}
-          title="Craft Bench Created"
-        >
-          <div className="flex gap-4">
-            <Button
-              text="Download Code"
-              variant="primary"
-              onClick={() => {
-                handleDownloadCode();
-              }}
-              loading={downloadLoading}
-            />
-            <Button
-              text="Publish to GitHub"
-              variant="warning"
-              onClick={() => {
-                handlePublishToGitHub();
-              }}
-              loading={publishLoading}
-            />
-          </div>
-        </Modal>
-      )}
     </>
   );
 };
