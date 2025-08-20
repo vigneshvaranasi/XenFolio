@@ -1,4 +1,4 @@
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useCraftBenchContext } from '../hooks/useCraftBenchContext'
 import SkillsBench from '../components/benches/SkillsBench'
@@ -8,16 +8,18 @@ import Button from '../components/ui/Button'
 import WorkExperienceBench from '../components/benches/WorkExperienceBench'
 import {
   createCraftBench,
-  downloadCode,
   getCraftBench,
-  publishFolio,
   updateCraftBench
 } from '../handler/craftBenchHandler'
-import Modal from '../components/ui/Modal'
 import toast from 'react-hot-toast'
 import { unpublishCraftBench } from '../handler/mySpaceHandlers'
 import { RotatingLines } from 'react-loader-spinner'
 import { defaultFolioConfig } from '../store/CraftBenchStore/CraftBenchContext'
+import {
+  validateExperience,
+  validatePersonalInformation,
+  validateProjects
+} from '../utils/validation'
 
 const CraftBenchPage = () => {
   const { craftBenchName } = useParams<{ craftBenchName: string }>()
@@ -50,12 +52,10 @@ const CraftBenchPage = () => {
 
   const { meta, folioConfig, setFolioConfig, setMeta } = useCraftBenchContext()
   const [currTab, setCurrTab] = useState<number>(0)
-  const [finishCraftBenchModal, setFinishCraftBenchModal] =
-    useState<boolean>(false)
 
   const [finishLoading, setFinishLoading] = useState<boolean>(false)
-  const [downloadLoading, setDownloadLoading] = useState<boolean>(false)
-  const [publishLoading, setPublishLoading] = useState<boolean>(false)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -111,7 +111,7 @@ const CraftBenchPage = () => {
           lastUpdated: meta?.lastUpdated ?? ''
         })
         toast.success('Hurray! Your Craft Bench has been created.')
-        setFinishCraftBenchModal(true)
+        navigate('/myspace')
       } else {
         toast.error('Oh-oh! Your Craft Bench could not be created.')
       }
@@ -151,63 +151,45 @@ const CraftBenchPage = () => {
     if (!isUpdated) {
       throw new Error('Craft Bench could not be updated')
     }
-    setFinishCraftBenchModal(true);
+    navigate('/myspace')
   }
 
-  const handleDownloadCode = async () => {
-    setDownloadLoading(true)
-    try {
-      if (meta?.craftId) {
-        const folioCode = await downloadCode(meta.craftId)
-        if (typeof folioCode !== 'string') {
-          console.error(
-            'folioCode is not a string, received:',
-            typeof folioCode
+  function handleNext () {
+    if (!folioConfig) {
+      toast.error('Craftbench cannot be empty!')
+      return
+    }
+    let validate: {
+      isValid: boolean
+      message: string
+    }
+
+    switch (currTab) {
+      case 0:
+        validate = validatePersonalInformation(folioConfig)
+        if (!validate.isValid) {
+          toast.error(
+            validate.message ||
+              'Please fill all required fields in Personal Information'
+          )
+          return
+        } else setCurrTab(currTab + 1)
+        break
+      case 1:
+        setCurrTab(currTab + 1)
+        break
+      case 2:
+        validate = validateProjects(folioConfig)
+        if (!validate.isValid) {
+          toast.error(
+            validate.message || 'Please fill all required fields in Projects'
           )
           return
         }
-        const blob = new Blob([folioCode], { type: 'text/html' })
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `${craftBenchName}.html`
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
-        URL.revokeObjectURL(url)
-        toast.success('Code downloaded successfully')
-      } else {
-        throw new Error('craftId is undefined, cannot download code.')
-      }
-    } catch (err: any) {
-      toast.error('Oh-oh! The Craft Bench could not be downloaded.')
-      console.error('Error downloading code:', err)
-    } finally {
-      setDownloadLoading(false)
-    }
-  }
-
-  const handlePublishToGitHub = async () => {
-    setPublishLoading(true)
-    try {
-      if (meta?.craftId === undefined) {
-        console.error('craftId is undefined, cannot publish to GitHub.')
-        throw new Error('No Craft Id, Restart CraftBench')
-      }
-      const publishStatus = await publishFolio(meta?.craftId)
-      if (publishStatus.error) {
-        console.error('Error publishing to GitHub:', publishStatus.message)
-        throw new Error(publishStatus.message)
-      } else {
-        toast.success('Your Folio is live at ' + publishStatus.folioURL)
-        console.log(publishStatus)
-      }
-    } catch (err: any) {
-      toast.error('Oh-oh! There was an error publishing to GitHub.')
-      console.error('Error publishing to GitHub:', err)
-    } finally {
-      setPublishLoading(false)
-      setFinishCraftBenchModal(false)
+        setCurrTab(currTab + 1)
+        break
+      default:
+        break
     }
   }
 
@@ -221,23 +203,7 @@ const CraftBenchPage = () => {
             <p className='text-gray-300'>{meta?.folioName}</p>
           </div>
         </div>
-        {/* <div className='flex space-x-4'>
-        {tabs.map((tab, index) => (
-          <button
-            key={index}
-            className={`px-4 py-2 rounded-lg ${
-              currTab === index
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-            }`}
-            onClick={() => setCurrTab(index)}
-          >
-            {tab.title}
-          </button>
-        ))}
-      </div> */}
         <div>{tabs[currTab].content}</div>
-
         <div className='my-6 flex justify-center gap-4 items-center '>
           {currTab > 0 && (
             <Button
@@ -250,7 +216,9 @@ const CraftBenchPage = () => {
             <Button
               text='Next'
               variant='primary'
-              onClick={() => setCurrTab(currTab + 1)}
+              onClick={() => {
+                handleNext()
+              }}
             />
           )}
           {currTab == tabs.length - 1 && (
@@ -258,11 +226,25 @@ const CraftBenchPage = () => {
               text={`${craftId ? 'Update' : 'Finish'}`}
               variant='success'
               onClick={() => {
+                if (!folioConfig) {
+                  toast.error('Craftbench cannot be empty!')
+                  return
+                }
+                const validate = validateExperience(folioConfig)
+                if (!validate.isValid) {
+                  toast.error(
+                    validate.message ||
+                      'Please fill all required fields in Work Experience'
+                  )
+                  return
+                }
+
                 if (craftId) {
                   toast.promise(
                     handleUpdate(),
                     {
-                      loading: 'Updating Craft Bench. This might take a few seconds.',
+                      loading:
+                        'Updating Craft Bench. This might take a few seconds.',
                       success: 'CraftBench Updated Successfully',
                       error: 'CraftBench could not be updated'
                     },
@@ -285,32 +267,6 @@ const CraftBenchPage = () => {
           )}
         </div>
       </div>
-      {finishCraftBenchModal && (
-        <Modal
-          isOpen={finishCraftBenchModal}
-          onClose={() => setFinishCraftBenchModal(false)}
-          title='Craft Bench Created'
-        >
-          <div className='flex gap-4'>
-            <Button
-              text='Download Code'
-              variant='primary'
-              onClick={() => {
-                handleDownloadCode()
-              }}
-              loading={downloadLoading}
-            />
-            <Button
-              text='Publish to GitHub'
-              variant='warning'
-              onClick={() => {
-                handlePublishToGitHub()
-              }}
-              loading={publishLoading}
-            />
-          </div>
-        </Modal>
-      )}
     </>
   )
 }

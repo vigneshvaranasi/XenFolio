@@ -1,8 +1,6 @@
 import githubLogo from '../assets/githubLogo.svg'
 import { CraftBench } from '../types/mySpace'
 import menuDots from '../assets/menuDots.svg'
-import unpublishImg from '../assets/unpublish.svg'
-import trash from '../assets/trash.svg'
 import link from '../assets/link.svg'
 import { useEffect, useRef, useState } from 'react'
 import {
@@ -10,11 +8,12 @@ import {
   unpublishCraftBench
 } from '../handler/mySpaceHandlers'
 import toast from 'react-hot-toast'
-import { publishFolio } from '../handler/craftBenchHandler'
+import { downloadCode, publishFolio } from '../handler/craftBenchHandler'
 import { RotatingLines } from 'react-loader-spinner'
 import { Link } from 'react-router-dom'
 import { getRepoName } from '../utils/craftBenchUtils'
 import { useUserContext } from '../hooks/useUserContext'
+import Status from './ui/Status'
 type CraftBenchCardProps = {
   bench: CraftBench
   username: string
@@ -63,6 +62,36 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
   async function handlePublish (craftId: string) {
     await publishFolio(craftId)
     benchData.onRefresh()
+  }
+
+  const handleDownloadCode = async () => {
+    try {
+      if (benchData.bench.craftId) {
+        const folioCode = await downloadCode(benchData.bench.craftId)
+        if (typeof folioCode !== 'string') {
+          console.error(
+            'folioCode is not a string, received:',
+            typeof folioCode
+          )
+          return
+        }
+        const blob = new Blob([folioCode], { type: 'text/html' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `${benchData.bench.name}.html`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        toast.success('Code downloaded successfully')
+      } else {
+        throw new Error('craftId is undefined, cannot download code.')
+      }
+    } catch (err: any) {
+      toast.error('Oh-oh! The Craft Bench could not be downloaded.')
+      console.error('Error downloading code:', err)
+    }
   }
 
   return (
@@ -128,7 +157,6 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
                   }}
                   className='flex items-center hover:bg-[#181818] rounded-t-lg p-1'
                 >
-                  <img src={unpublishImg} className='w-4' alt='' />
                   <p className='hover:bg-[#181818] cursor-pointer'>Unpublish</p>
                 </div>
               ) : (
@@ -137,7 +165,8 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
                     toast.promise(
                       handlePublish(benchData.bench.craftId),
                       {
-                        loading: 'Publishing your Folio. This might take a few seconds.',
+                        loading:
+                          'Publishing your Folio. This might take a few seconds.',
                         success: 'Your Folio is now published!',
                         error: 'Failed to publish your Folio. Please try again.'
                       },
@@ -161,14 +190,23 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
                   <p className='hover:bg-[#181818] cursor-pointer'>Publish</p>
                 </div>
               )}
-                <Link
+              <Link
                 className='hover:bg-[#181818] p-1'
-                  to={`/preview/${benchData.bench.craftId}`}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  Preview
-                </Link>
+                to={`/preview/${benchData.bench.craftId}`}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                Preview
+              </Link>
+              <div
+                onClick={() => {
+                  handleDownloadCode()
+                  setShowMenu(false)
+                }}
+                className='flex items-center hover:bg-[#181818] p-1'
+              >
+                <p className='cursor-pointer'>Download</p>
+              </div>
               <div
                 onClick={() => {
                   handleDelete(benchData.bench.craftId)
@@ -176,7 +214,6 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
                 }}
                 className='flex items-center hover:bg-[#181818] rounded-b-lg p-1'
               >
-                <img src={trash} className='w-4' alt='' />
                 <p className=' cursor-pointer text-red-500'>Delete</p>
               </div>
             </div>
@@ -199,32 +236,26 @@ function CraftBenchCard (benchData: CraftBenchCardProps) {
             {benchData.bench.status === 'published' && (
               <div
                 className={`rounded-full bg-[#1A1A1A] w-fit drop-shadow-[0_0_10px_#1A1A1A12] font-sans font-semibold border border-[#333538]
-              ${benchData.bench.repoLink ? 'opacity-100' : 'opacity-50'} p-1`}
+              ${benchData.bench.repoLink ? 'opacity-100' : 'opacity-50'} p-1 px-2`}
               >
                 <a
                   target='_blank'
                   href={`https://${user?.username}.github.io/${getRepoName(
                     benchData.bench.repoLink
                   )}`}
+                  className='flex items-center gap-1'
                 >
-                  <img src={link} className='w-4' alt='' />
+                  <img src={link} className='w-3' alt='' />
+                  <p className='text-xs'>View Site</p>
                 </a>
               </div>
             )}
           </div>
           {/* Status */}
           <div className='flex flex-col items-end'>
-            {benchData.bench.status === 'published' ? (
-              <h2 className='bg-[#2c583f] rounded-full px-2 text-[#050e05] flex justify-evenly items-center text-sm'>
-                <span className='bg-[#289d65] w-3 h-3 rounded-full border border-[#289d659a] mr-1'></span>
-                {benchData.bench.status}
-              </h2>
-            ) : (
-              <h2 className='bg-[#8a622d] rounded-full px-2 text-[#0c0801] flex justify-evenly items-center text-sm'>
-                <span className='bg-[#cf8e1c] w-3 h-3 rounded-full border border-[#cf8e1c9a] mr-1'></span>
-                {benchData.bench.status}
-              </h2>
-            )}
+            <Status
+              status={benchData.bench.status as 'inProgress' | 'published'}
+            />
           </div>
         </div>
       </div>
